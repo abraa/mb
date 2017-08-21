@@ -1,0 +1,94 @@
+<form id="toolbar" class="form">
+    <table width="100%">
+        <tr>
+            <td>
+                <a class="easyui-linkbutton" iconCls="icon-remove" plain="true" onclick="onRemove()">删除</a>
+                <a class="datagrid-btn-separator"></a>
+                <a class="easyui-linkbutton" iconCls="icon-add" plain="true" onclick="onOpen({})">添加</a>
+            </td>
+            <td align="right">
+                <select name="search_type" class="easyui-combobox" style="width: 100px;">
+                    <option value="-1">配置类型</option>
+                    <volist name="Think.config.CONFIG_TYPE_LIST" id="type">
+                        <option value="{$key}">{$type}</option>
+                    </volist>
+                </select>
+                <select name="search_group" class="easyui-combobox" style="width: 100px;">
+                    <option value="-1">配置分组</option>
+                    <option value="0">不分组</option>
+                    <volist name="Think.config.CONFIG_GROUP_LIST" id="type">
+                        <option value="{$key}">{$type}</option>
+                    </volist>
+                </select>
+                <input name="keywords" class="easyui-textbox" data-options="buttonText:'查询',prompt:'请输入关键词',buttonIcon:'icon-search', onClickButton: onSearch" style="width:250px;">
+            </td>
+        </tr>
+    </table>
+</form>
+<table id="grid">
+    <thead>
+    <tr>
+        <th data-options="field:'ck',checkbox:true"></th>
+        <th data-options="field:'name',width:120">标识</th>
+        <th data-options="field:'title',width:50">标题</th>
+        <th data-options="field:'group_name',width:50">分组</th>
+        <th data-options="field:'type_name',width:50">类型</th>
+        <th data-options="field:'create_time',width:50">添加时间</th>
+        <th data-options="field:'update_time',width:60, align:'center'">更新时间</th>
+    </tr>
+    </thead>
+</table>
+<script type="text/javascript">
+    var grid = $('#grid');
+    $(function(){
+        easyui.datagrid({
+            element: grid,
+            onDblClickRow: function(index, node){
+                onOpen(node);
+            }
+        });
+    });
+
+    var onOpen = function(row) {
+        var opts = {
+            href: '{:U("form")}',
+            width: 500,
+            data: row,
+            modal:false,
+            handler: function(result){
+                grid.datagrid('reload');
+            }
+        };
+        shadow.open(opts);
+    }
+
+    var onSearch = function(){
+        var query = $('#toolbar').form('getData');
+        grid.datagrid({
+            queryParams: query
+        });
+    };
+
+    var onRemove = function(){
+        var rows = grid.datagrid('getChecked');
+        var items = [];
+        for(var i = 0; i < rows.length; i++){
+            items.push(rows[i].id);
+        }
+        items = items.join(',');
+        if(empty(items)){
+            easyui.alert('请选择需要操作的选项！');
+            return false;
+        }
+        easyui.confirm('请再次确认是否需要继续进行您的操作!', function(){
+            easyui.post('{:U("delete")}', {item_id: items}, function(result){
+                try{
+                    if(!result.status){
+                        easyui.alert(result.info);
+                    }
+                    grid.datagrid('reload');
+                }catch (e){}
+            });
+        });
+    };
+</script>

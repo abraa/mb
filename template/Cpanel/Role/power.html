@@ -1,0 +1,28 @@
+<div class="datagrid-toolbar form">
+    <table width="100%">
+        <tr>
+            <td>
+                <a class="easyui-linkbutton" plain="true"><i class="fa fa-cogs"></i> 权限列表</a>
+            </td>
+        </tr>
+    </table>
+</div>
+<ul id="grid"></ul>
+<script type="text/javascript">
+var menu = eval('({$menu})');
+skin_tree({
+	id:'#grid',
+	default_id:'{$role.menu_id}',
+	list_json:menu
+});
+var onReturn = function(){
+	var rows = grid.tree('getChecked');
+	var items = [];
+	if(rows) {
+		for(var i = 0; i < rows.length; i++) {
+			items.push(rows[i].id);
+		}
+	}
+	return items.join(',');
+}
+</script>

@@ -1,0 +1,78 @@
+<div class="datagrid-toolbar form">
+    <table>
+        <tr>
+            <td width="100%">
+                <a class="easyui-linkbutton" plain="true"><i class="fa fa-th-list"></i> 个人信息</a>
+            </td>
+        </tr>
+    </table>
+</div>
+<form id="master" data-url="{:U('information')}" method="post" class="container">
+    <div class="easyui-panel" title="修改用户">
+        <table class="form" width="100%">
+            <tr>
+                <th width="10%">所属组别：</th>
+                <td>
+                    {$info.group_name}
+                </td>
+            </tr>
+            <tr>
+                <th>所属角色：</th>
+                <td>
+                    {$info.role_name}
+                </td>
+            </tr>
+            <tr>
+                <th>登录账号：</th>
+                <td>
+                    {$info.user_name}
+                </td>
+            </tr>
+            <tr>
+                <th>真实名称：</th>
+                <td>
+                    {$info.real_name}
+                </td>
+            </tr>
+            <tr>
+                <th>性&nbsp;&nbsp;&nbsp;&nbsp;别：</th>
+                <td>
+                    {$info['sex'] == 1 ? '男' : '女'}
+                </td>
+            </tr>
+            <tr>
+                <th>登录密码：</th>
+                <td>
+                    <input type="password" name="password" class="easyui-textbox">
+                </td>
+            </tr>
+            <tr>
+                <th>确认密码：</th>
+                <td>
+                    <input type="password" name="confirm_password" class="easyui-textbox">
+                </td>
+            </tr>
+        </table>
+        <div class="panel-footer" style="padding:5px;">
+            <a class="easyui-linkbutton button-small" onclick="onSubmit()"> 保存</a>
+        </div>
+    </div>
+
+</form>
+<script type="text/javascript">
+    var onSubmit = function(){
+        var data = $('#master').form('getData');
+        var password = data.password;
+        var confirm_password = data.confirm_password;
+        if(password == '' || confirm_password == '') return false;
+        if(password != confirm_password) return false;
+        easyui.submit('master', function(result){
+            try{
+                easyui.alert(result.info, function() {
+                    parent.reflashTab();
+                });
+                return false;
+            }catch (e){}
+        })
+    };
+</script>

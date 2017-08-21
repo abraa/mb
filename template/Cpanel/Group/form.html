@@ -1,0 +1,38 @@
+<fieldset class="fixed">
+<form data-url="{:U('save')}" method="post" class="form">
+    <table>
+        <tr>
+            <th>组别名称：</th>
+            <td>
+                <input name="text" class="easyui-textbox" size="25" data-options="required:true">
+            </td>
+        </tr>
+        <tr>
+            <th>上级组别：</th>
+            <td>
+                <input class="easyui-combotree" name="pid" method="get" data-options="url:'{:U('index?type=parent')}'" style="width:150px;">
+            </td>
+        </tr>
+        <tr>
+            <th>是否锁定：</th>
+            <td>
+                <input type="radio" name="locked" value="1">是
+                <input type="radio" name="locked" value="0">否
+            </td>
+        </tr>
+        <tr>
+            <th>排列顺序：</th>
+            <td>
+                <input type="text" name="orderby" class="easyui-numberspinner" data-options="min:0,max:1000,required:true" value="50">
+            </td>
+        </tr>
+        <tr>
+            <th>备注：</th>
+            <td>
+                <input type="text" name="remark" size="35" class="easyui-textbox" >
+                <input type="hidden" name="id" value="0">
+            </td>
+        </tr>
+    </table>
+</form>
+</fieldset>

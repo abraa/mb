@@ -1,0 +1,256 @@
+<include file="Public:header" />
+<script src="__PUBLIC__/js/index.js"></script>
+<div id="common-layout" class="easyui-layout"  data-options="fit:true">
+    <div data-options="region:'north', border: false, split:false">
+        <div class="header">
+            <div class="logo"><i class="fa fa-drupal"></i> 网站管理平台</div>
+            <ul class="nav left" id="nav">
+                <li><a href="javascript:;" id="resize-bars">&nbsp;<i class="fa fa-bars"></i>&nbsp;</a></li>
+            </ul>
+            <ul class="nav right">
+                <li><a href="{:U('/')}" class="fa fa-home" target="_blank"></a></li>
+                <li><a href="javascript:;" onclick="openTab(null, '个人信息', '{:U(\'admin/information\')}', true)" class="fa fa-user"></a></li>
+                <li><a href="{:U('passport/logout')}" class="fa fa-power-off nav-logout"></a></li>
+            </ul>
+        </div>
+    </div>
+    <div id="commom-west" data-options="region:'west',split:false,border:false" class="west">
+        <h2 id="nav-title"></h2>
+        <ul id="menu"></ul>
+    </div>
+    <div data-options="region:'center',border:false,split:false" class="borderTop">
+        <div id="right-tabs" class="easyui-tabs" data-options="fit:true,border:false,tabPosition:'bottom',tabHeight:'35',plain:true,onContextMenu:onRightTabsContextMenu">
+            <div title="工作台"  class="container">
+                <div style="width: 100%; height: auto; overflow: hidden">
+                    <div style="width: 48%; float: left; padding: 10px;">
+                        <div class="easyui-panel" title="个人信息">
+                            <table class="form">
+                                <tr>
+                                    <td>
+                                        你好，{$userInfo.real_name}
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        所属角色：{$userInfo.role_name}
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        最后登陆时间：{$userInfo.last_login_time}
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        最后登陆IP：{$userInfo.last_login_ip}
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                    <div style="width: 48%; float: left; padding: 10px">
+                        <div class="easyui-panel" title="当前在线用户" data-options="fit:true">
+                            <table class="form">
+                                <tr>
+                                    <td>
+                                        <volist name="account" id="account">
+                                            [{$account.real_name}]&nbsp;&nbsp;
+                                        </volist>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                <div style="width: 100%; height: auto; overflow: hidden">
+                    <div style="width: 48%; float: left; padding: 10px;">
+                        <div class="easyui-panel" title="服务器参数">
+                            <table class="form">
+                                <tr>
+                                    <td>
+                                        服务器域名/IP地址：{$_SERVER['SERVER_NAME']}(<if condition="DIRECTORY_SEPARATOR eq '/'">{$_SERVER['SERVER_ADDR']}<else/>{:@gethostbyname($_SERVER['SERVER_NAME'])}</if>)
+                                </tr>
+                                <tr>
+                                    <td>
+                                        服务器标识：<if condition="$sysinfo['win_n'] neq ''">{$sysInfo['win_n']}<else/>{:@php_uname()}</if>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        服务器操作系统：{$os[0]}&nbsp;内核版本：<if condition="DIRECTORY_SEPARATOR eq '/'">{$os[2]}<else />{$os[1]}</if>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        服务器解译引擎：{$_SERVER['SERVER_SOFTWARE']}
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        服务器语言：{:getenv('HTTP_ACCEPT_LANGUAGE')}
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        服务器端口：{$_SERVER['SERVER_PORT']}
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        服务器主机名：<if condition="DIRECTORY_SEPARATOR eq '/'">{$os[1]}<else />{$os[2]}</if>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        管理员邮箱：{$_SERVER['SERVER_ADMIN']}
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        PHP信息：<a style="cursor: pointer;text-decoration: underline;" onclick="showPHP()">PHPINFO</a>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        绝对路径：{$Think.APP_ROOT}
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        最大内存（memory_limit）：{:get_cfg_var('memory_limit')}
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        上传文件最大限制（upload_max_filesize）：{:get_cfg_var('upload_max_filesize')}
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                    <div style="width: 48%; float: left; padding: 10px">
+                        <div class="easyui-panel" title="服务器实时数据" data-options="fit:true">
+                            <table class="form">
+                                <tr>
+                                    <td>
+                                        服务器当前时间：{$sysInfo.stime}
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        服务器已运行时间：{$sysInfo.uptime}
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        总空间：{$sysInfo.DiskTotal}&nbsp;GB &nbsp;&nbsp;&nbsp;&nbsp;<span title="显示的是网站所在的目录的可用空间，非服务器上所有磁盘之可用空间！">可用空间</span>： <font color='#CC0000'><span>{$sysInfo.freeSpace}</span></font>&nbsp;GB
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        CPU型号 [{$sysInfo.cpu.num}核]：{$sysInfo.cpu.model}
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        内存使用状况：物理内存：共<font color='#CC0000'>{$sysInfo.TotalMemory}</font>, 已用<font color='#CC0000'><span>{$sysInfo.UsedMemory}</span></font>, 空闲<font color='#CC0000'><span>{$sysInfo.FreeMemory}</span></font>, 使用率<span>{$sysInfo.memPercent}</span>
+                                        <div class="bar"><div class="barli_green" style="width:{$sysInfo.memPercent}">&nbsp;</div></div>
+                                    </td>
+                                </tr>
+                                <if condition="$sysInfo['CachedMemory'] gt 0">
+                                    <tr>
+                                        <td>
+                                            Cache化内存为 <span>{$sysInfo.CachedMemory}</span>, 使用率<span>{$sysInfo.memCachedPercent}</span> %	| Buffers缓冲为  <span>{$sysInfo.Buffers}</span>
+                                            <div class="bar"><div class="barli_blue" style="width:{$sysInfo.barmemCachedPercent}">&nbsp;</div></div>
+                                            真实内存使用 <span>{$sysInfo.memRealUsed}</span>, 真实内存空闲<span>{$sysInfo.memRealFree}</span>, 使用率<span>{$sysInfo.memRealPercent}</span> %
+                                            <div class="bar_1"><div class="barli_1" style="width:{$sysInfo.barmemRealPercent}">&nbsp;</div></div>
+                                        </td>
+                                    </tr>
+                                </if>
+                                <if condition="$sysInfo['TotalSwap'] gt 0">
+                                    <tr>
+                                        <td>
+                                            SWAP区：共{$sysInfo.TotalSwap}, 已使用<span>{$sysInfo.swapUsed}</span>, 空闲<span>{$sysInfo.swapFree}</span>, 使用率<span>{$sysInfo.swapPercent}</span> %
+                                            <div class="bar"><div class="barli_red" style="width:{$sysInfo.barswapPercent}">&nbsp;</div></div>
+                                        </td>
+                                    </tr>
+                                </if>
+                                <tr>
+                                    <td>
+                                        系统平均负载：{$sysInfo.loadAvg}
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                <div style="width: 100%; height: auto; overflow: hidden">
+                    <div style="width: 48%; float: left; padding: 10px;">
+                        <div class="easyui-panel" title="网络使用情况">
+                            <table class="form">
+                                <volist name="netState" id="net">
+                                <tr>
+                                    <td>
+                                       {$net}
+                                    </td>
+                                </tr>
+                                </volist>
+                            </table>
+                        </div>
+                    </div>
+                    <div style="width: 48%; float: left; padding: 10px">
+                        <div class="easyui-panel" title="系统说明" data-options="fit:true">
+                            <table class="form">
+                                <tr>
+                                    <td>
+                                        本系统采用
+                                        <span style="cursor: pointer;text-decoration: underline;" onclick="showGPL()">GPL协议</span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        当前版本：v<{:C('SYSTEM_VERSION')}> （仅支持HTML5浏览器）
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        采用 ThinkPHP <{$Think.version}> + jQuery EasyUI 1.4.4 开发
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div id="rightTabsMenu" class="easyui-menu" data-options="onClick:onRightTabsHandler">
+    <div data-options="name:'close', iconCls:'icon-no'">关闭当前标签页</div>
+    <div data-options="name:'closeAll', iconCls:'icon-no'">关闭所有标签页</div>
+    <div data-options="name:'reload',iconCls:'icon-save'">刷新</div>
+</div>
+<include file="Public:footer" />
+<script type="text/javascript">
+   function showGPL() {
+       var opts = {
+           href: 'http://www.gnu.org/licenses/gpl.txt',
+           title:'GPL协议',
+           width: 600,
+           height:550,
+           buttons:[]
+       };
+       easyui.dialog(opts);
+   }
+   
+   function showPHP() {
+       var opts = {
+           href: "{:U('phpInfo')}",
+           title:'PHPINFO',
+           width: 900,
+           height:600,
+           buttons:[]
+       };
+       easyui.dialog(opts);
+   }
+</script> 

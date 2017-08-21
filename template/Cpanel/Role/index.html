@@ -1,0 +1,105 @@
+<div id="toolbar">
+    <table class="form">
+        <tr>
+            <td>
+                <a class="easyui-linkbutton" iconCls="icon-add" plain="true" onclick="onOpen({})">添加</a>
+                <a class="datagrid-btn-separator"></a>
+                <a class="easyui-linkbutton" iconCls="icon-man" plain="true" onclick="onAssign()">分配功能权限</a>
+            </td>
+        </tr>
+    </table>
+</div>
+<table id="grid" width="100%">
+    <thead>
+    <tr>
+        <th data-options="field:'text',width:120">角色名称</th>
+        <th data-options="field:'locked',width:50,align:'center', formatter: function(value){
+        return value == '1' ? '<font color=red>是</font>' : '否';
+    }">锁定</th>
+        <th data-options="field:'remark',width:90">备注</th>
+        <th data-options="field:'orderby',width:30">排序</th>
+    </tr>
+    </thead>
+</table>
+<div id="leftMenu" class="easyui-menu" data-options="onClick:onMenu">
+    <div data-options="name:'delete', iconCls:'icon-no'">删除</div>
+    <div data-options="name:'reload',iconCls:'icon-save'">刷新</div>
+</div>
+<script type="text/javascript">
+    var grid = $('#grid');
+    var rowId = 0;
+    $(function(){
+        easyui.treegrid({
+            element:grid,
+            onContextMenu: function(e, row){
+                e.preventDefault();
+                try {
+                    rowId = row.id;
+                    $('#leftMenu').menu('show', {
+                        left:e.pageX,
+                        top:e.pageY
+                    });
+                }catch(e){}
+            },
+            onDblClickRow: function(row){
+                onOpen(row);
+            }
+        });
+    });
+
+    function onOpen(row) {
+        var opts = {
+            href: '{:U("form")}',
+            width: 500,
+            data: row,
+            handler: function(result){
+                grid.treegrid('reload');
+            }
+        };
+        shadow.open(opts);
+    }
+
+    function onAssign() {
+        var row = grid.treegrid('getSelected');
+        if(!row) return false;
+        var opts = {
+            href: '{:U("power")}',
+            width: 400,
+            queryParams: {role_id: row.id},
+            handler: function(result){
+                easyui.doAjax(opts.href, {menu_list: result, role_id: row.id});
+            }
+        };
+        shadow.open(opts);
+    }
+	
+	//分配站点权限
+	function onSitePower() {
+        var row = grid.treegrid('getSelected');
+        if(!row) return false;
+        var opts = {
+            href: '{:U("sitePower")}',
+            width: 400,
+            queryParams: {role_id: row.id},
+            handler: function(result){
+				
+            }
+        };
+        shadow.open(opts);
+    }
+
+    function onMenu(item) {
+        switch (item.name) {
+            case 'reload':
+                grid.treegrid('reload');
+                break;
+            case 'delete':
+                if(rowId){
+                    easyui.doAjax('{:U("delete")}', {item_id: rowId}, function(){
+                        grid.treegrid('reload');
+                    });
+                }
+        }
+
+    }
+</script>

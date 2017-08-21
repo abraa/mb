@@ -1,0 +1,68 @@
+<form id="form" data-url="{:U('save')}" method="post" class="form">
+    <fieldset class="fixed">
+    <table>
+        <tr>
+            <th>配置标识：</th>
+            <td>
+                <input name="name" class="easyui-textbox" data-options="required:true" size="35">
+            </td>
+        </tr>
+        <tr>
+            <th>配置标题：</th>
+            <td>
+                <input name="title" class="easyui-textbox" data-options="required:true"size="35">
+            </td>
+        </tr>
+        <tr>
+            <th>排序：</th>
+            <td>
+                <input type="text" name="orderby" class="easyui-numberspinner" data-options="min:0,max:1000,required:true" value="50" size="25">
+            </td>
+        </tr>
+        <tr>
+            <th>配置类型：</th>
+            <td>
+                <select name="type" class="easyui-combobox" style="width: 100px;">
+                    <volist name="Think.config.CONFIG_TYPE_LIST" id="type">
+                        <option value="{$key}">{$type}</option>
+                    </volist>
+                </select>
+            </td>
+        </tr>
+        <tr>
+            <th>配置分组：</th>
+            <td>
+                <select name="group" class="easyui-combobox" style="width: 100px;">
+                    <option value="0">不分组</option>
+                    <volist name="Think.config.CONFIG_GROUP_LIST" id="type">
+                        <option value="{$key}">{$type}</option>
+                    </volist>
+                </select>
+            </td>
+        </tr>
+        <tr>
+            <th>配置值：</th>
+            <td>
+                <input name="value" class="easyui-textbox" data-options="multiline:true,prompt:'数组类型需要填写配置项，格式: 0:关闭,1:开启'"style="width:300px;height:50px">
+            </td>
+        </tr>
+        <tr>
+            <th>配置项：</th>
+            <td>
+                <input name="extra" class="easyui-textbox" data-options="multiline:true,prompt:'枚举需要填写配置项，格式: 0:关闭,1:开启'"style="width:300px;height:50px">
+            </td>
+        </tr>
+        <tr>
+            <th>说明：</th>
+            <td>
+                <input name="remark" class="easyui-textbox" data-options="multiline:true"style="width:300px;height:50px">
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <input type="hidden" name="id">
+            </td>
+        </tr>
+    </table>
+    </fieldset>
+</form>

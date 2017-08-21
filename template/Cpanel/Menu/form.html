@@ -1,0 +1,77 @@
+<form data-url="{:U('save')}" method="post" class="form">
+    <fieldset class="fixed">
+    <table>
+        <tr>
+            <th>所属功能：</th>
+            <td>
+                <input class="easyui-combotree" name="pid" data-options="url:'{:U('index?type=parent')}'" size="35">
+            </td>
+        </tr>
+        <tr>
+            <th>功能名称：</th>
+            <td><input name="text" class="easyui-textbox" size="35" data-options="required:true"></td>
+        </tr>
+        <tr>
+            <th>模块名：</th>
+            <td>
+                <input name="module" class="easyui-textbox" size="35"  data-options="required:true">
+            </td>
+        </tr>
+        <tr>
+            <th>控制器：</th>
+            <td>
+                <input name="controller" class="easyui-textbox" size="35"  data-options="required:true">
+            </td>
+        </tr>
+        <tr>
+            <th>方法名：</th>
+            <td>
+                <input name="method" class="easyui-textbox" size="35"  data-options="required:true">
+            </td>
+        </tr>
+        <tr>
+            <th>关联方法：</th>
+            <td>
+                <input name="other_method" class="easyui-textbox" size="65"  data-options="prompt:'权限关联方法，多个方法请用英文逗号隔开'">
+            </td>
+        </tr>
+        <tr>
+            <th>图标：</th>
+            <td>
+                <input name="icon" class="easyui-textbox" data-options="buttonText:'选择',buttonIcon:'icon-search', onClickButton: onSearch" size="35">
+            </td>
+        </tr>
+        <tr>
+            <th>排列顺序：</th>
+            <td>
+                <input name="orderby" class="easyui-numberspinner" data-options="min:0,max:1000,required:true" value="50">
+            </td>
+        </tr>
+        <tr>
+            <th>显示：</th>
+            <td>
+                <input type="radio" name="display" value="1">是
+                <input type="radio" name="display" value="0">否
+            </td>
+        </tr>
+    </table>
+    <input type="hidden" name="id" value="0">
+    </fieldset>
+</form>
+<script type="text/javascript">
+    function onSearch() {
+        var self = $(this);
+        var opts = {
+            href: '{:U("icon")}',
+            width: 500,
+            height: 500,
+            onDestroy: function(result){
+                if(typeof top.select_icon != 'undefined') {
+                   self.textbox('setValue', top.select_icon);
+                }
+            },
+            buttons:null
+        };
+        top.dgWidows = top.easyui.dialog(opts);
+    }
+</script>

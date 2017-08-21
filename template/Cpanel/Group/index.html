@@ -1,0 +1,80 @@
+<div id="toolbar">
+    <table class="form">
+        <tr>
+            <td width="100%">
+                <a class="easyui-linkbutton" iconCls="icon-add" plain="true" onclick="onOpen({})">添加</a>
+            </td>
+            <td>
+                <input id="keyword" class="easyui-textbox" data-options="buttonText:'搜索',prompt:'请输入关键词...',buttonIcon:'icon-search',onClickButton:onSearch" style="width:250px;">
+            </td>
+        </tr>
+    </table>
+</div>
+<table id="grid" width="100%"></table>
+
+<div id="leftMenu" class="easyui-menu" data-options="onClick:onMenu">
+    <div data-options="name:'delete', iconCls:'icon-no'">删除</div>
+    <div data-options="name:'reload',iconCls:'icon-save'">刷新</div>
+</div>
+<script type="text/javascript">
+    var grid = $('#grid');
+    var rowId = 0;
+    $(function(){
+        easyui.treegrid({
+            element:grid,
+            onContextMenu: function(e, row){
+                e.preventDefault();
+                rowId = row.id;
+                $('#leftMenu').menu('show', {
+                    left:e.pageX,
+                    top:e.pageY
+                });
+            },
+            columns:[[
+                {field:'text',title:'组别名称',width:120},
+                {field:'locked',title:'是否锁定',width: 50, align:'center', formatter: function(value){
+                    if(value == '1') return '<font color="red">是</font>';
+                    return '否';
+                }},
+                {field:'remark',title:'备注',width:200},
+                {field: 'orderby', title:'排序', width:50}
+            ]],
+            onDblClickRow: function(row){
+                onOpen(row);
+            }
+        });
+    });
+
+    function onOpen(row) {
+        var opts = {
+            href: '{:U("form")}',
+            width: 500,
+            data: row,
+            handler: function(result){
+                grid.treegrid('reload');
+            }
+        };
+        shadow.open(opts);
+    }
+
+    function onMenu(item) {
+        switch (item.name) {
+            case 'reload':
+                grid.treegrid('reload');
+                break;
+            case 'delete':
+                if(rowId){
+                    easyui.doAjax('{:U("delete")}', {item_id: rowId}, function(){
+                        grid.treegrid('reload');
+                    });
+                }
+        }
+
+    }
+
+    function onSearch() {
+        grid.treegrid('reload', {
+            keyword: $('#keyword').val()
+        });
+    }
+</script>
