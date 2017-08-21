@@ -13,7 +13,4 @@ return array(
     'NOT_EXISTS'                => '不存在！',
     'LOGIN_AGAIN'               => '已掉线，请重新登录',
 
-
-    'SMS_CODE'                  => '您的验证码是%s，请确保是本人操作以防信息泄露！',
-
 );

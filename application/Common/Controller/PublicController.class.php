@@ -23,9 +23,4 @@ class PublicController extends Controller {
         Config::init();
     }
 
-    public function _initialize(){
-        $db_config = C('cpanel');
-        C($db_config);
-    }
-
 }

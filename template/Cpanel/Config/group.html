@@ -48,43 +48,6 @@
                 </div>
             </notempty>
         </volist>
-        <div title="评论积分配置" style="padding:10px;">
-            <table>
-                <tr>
-                    <th>售前评价：</th>
-                    <td>
-
-                        <input name="config[EVALUATE][PRE_SALE][integral]" class="easyui-textbox" size="3" value="<if condition="$evaluate[PRE_SALE][integral]">{$evaluate.PRE_SALE.integral}<else />0</if>">积分/次,
-                        <input name="config[EVALUATE][PRE_SALE][dayNum]" class="easyui-textbox" size="3" value="<if condition="$evaluate[PRE_SALE][dayNum]">{$evaluate.PRE_SALE.dayNum}<else />0</if>">次/天（评论获得积分的次数）,
-                        <input name="config[EVALUATE][PRE_SALE][monthNum]" class="easyui-textbox" size="3" value="<if condition="$evaluate[PRE_SALE][monthNum]">{$evaluate.PRE_SALE.monthNum}<else />0</if>">次/月（评论获得积分的次数）,
-                    </td>
-                </tr>
-                <tr>
-                    <th>售后评价：</th>
-                    <td>
-                        <input name="config[EVALUATE][AFTER_SALE][integral]" class="easyui-textbox" size="3" value="<if condition="$evaluate[AFTER_SALE][integral]">{$evaluate.AFTER_SALE.integral}<else />0</if>">积分/次,
-                        <input name="config[EVALUATE][AFTER_SALE][dayNum]" class="easyui-textbox" size="3" value="<if condition="$evaluate[AFTER_SALE][dayNum]">{$evaluate.AFTER_SALE.dayNum}<else />0</if>">次/天（评论获得积分的次数）,
-                        <input name="config[EVALUATE][AFTER_SALE][monthNum]" class="easyui-textbox" size="3" value="<if condition="$evaluate[AFTER_SALE][monthNum]">{$evaluate.AFTER_SALE.monthNum}<else />0</if>">次/月（评论获得积分的次数）,
-                    </td>
-                </tr>
-                <tr>
-                    <th>订单评价：</th>
-                    <td>
-                        <input name="config[EVALUATE][ORDER][integral]" class="easyui-textbox" size="3" value="<if condition="$evaluate[ORDER][integral]">{$evaluate.ORDER.integral}<else />0</if>">积分/次,
-                        <input name="config[EVALUATE][ORDER][dayNum]" class="easyui-textbox" size="3" value="<if condition="$evaluate[ORDER][dayNum]">{$evaluate.ORDER.dayNum}<else />0</if>">次/天（评论获得积分的次数）,
-                        <input name="config[EVALUATE][ORDER][monthNum]" class="easyui-textbox" size="3" value="<if condition="$evaluate[ORDER][monthNum]">{$evaluate.ORDER.monthNum}<else />0</if>">次/月（评论获得积分的次数）,
-                    </td>
-                </tr>
-                <tr>
-                    <th>品牌调查：</th>
-                    <td>
-                        <input name="config[EVALUATE][SURVEY][integral]" class="easyui-textbox" size="3" value="<if condition="$evaluate[SURVEY][integral]">{$evaluate.SURVEY.integral}<else />0</if>">积分/次,
-                        <input name="config[EVALUATE][SURVEY][dayNum]" class="easyui-textbox" size="3" value="<if condition="$evaluate[SURVEY][dayNum]">{$evaluate.SURVEY.dayNum}<else />0</if>">次/天（评论获得积分的次数）,
-                        <input name="config[EVALUATE][SURVEY][monthNum]" class="easyui-textbox" size="3" value="<if condition="$evaluate[SURVEY][monthNum]">{$evaluate.SURVEY.monthNum}<else />0</if>">次/月（评论获得积分的次数）,
-                    </td>
-                </tr>
-            </table>
-        </div>
     </div>
     <br>
     <div class="container">

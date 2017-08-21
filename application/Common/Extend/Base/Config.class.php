@@ -43,32 +43,6 @@ class Config
         return $config;
     }
 
-    public static function getWechat()
-    {
-        $config = C('cpanel');
-        if (C('DB_NAME') == $config['DB_NAME']) {
-            $dbModel = M('WechatAccount');
-        } else {
-            $dbModel = M('WechatAccount', $config['DB_PREFIX'], 'CPANEL');
-        }
-        $data = $dbModel->field('token,app_id,app_secret,machine_id,pay_key,crypted,encoding_aes_key')->where(array('defaulted' => 1))->find();
-        if (!empty($data)) {
-            C('token',$data['token']);  //令牌
-            C('appid',$data['app_id']);  //应用ID
-            C('appsecret',$data['app_secret']); //应用密钥
-			C('wechat_machine_id',$data['machine_id']);  //商务号
-			C('wechat_pay_key',$data['pay_key']);  //支付密钥
-        }
-
-        define('TOKEN', (isset($data['token']) ? $data['token'] : ''));  //令牌
-        define('APPID', (isset($data['app_id']) ? $data['app_id'] : ''));  //应用ID
-        define('APPSECRET', (isset($data['app_secret']) ? $data['app_secret'] : ''));  //应用密钥
-		define('WECHAT_MACHINE_ID', (isset($data['machine_id']) ? $data['machine_id'] : ''));  //商务号
-		define('WECHAT_PAY_KEY', (isset($data['pay_key']) ? $data['pay_key'] : ''));  //支付密钥
-
-        return $data;
-    }
-
     /**
      * 根据配置类型解析配置
      * @param integer $type 配置类型
