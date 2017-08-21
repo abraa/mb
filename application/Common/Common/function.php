@@ -24,31 +24,6 @@ function locationHref()
     return $url;
 }
 
-/**
- * 根据频道和域名反馈电话号码或QQ号
- * @return array
- */
-function getTel()
-{
-    $key = C('site_id');
-    if (empty($key)) return array();
-    $channel = C('CHANNEL');
-    $host = C('domain');
-    $campaign = I('get.campaign');
-    $data = $channel[$key];
-    $cKey = null;
-    foreach ($data as $k => $v) {
-        if (strpos($campaign, $k) !== false) {
-            $cKey = $k;
-        }
-    }
-    $result = !is_null($cKey) ? $data[$cKey] : (!empty($host[$_SERVER['HTTP_HOST']]) && is_array($host[$_SERVER['HTTP_HOST']]) ? $host[$_SERVER['HTTP_HOST']] : array());
-    $tel = $result['tel'];
-    strInsert($tel, 3, '-');
-    strInsert($tel, 8, '-');
-    $result['tel_show'] = $tel;
-    return $result;
-}
 
 
 /*
@@ -134,80 +109,6 @@ function makeDir($folder)
     return $reval;
 }
 
-/*
-*	获取当前域名、渠道对应的电话、QQ号码
-*	@Author 9009123 (Lemonice)
-*	@param integer $order_sn  订单号
-*	@param $integer $pay_id  支付id
-*	@return void
-*/
-function getAdvisoryInfo($campaign = '')
-{
-    $data = array(
-        'qq' => '',
-        'tel' => '',  //拨打
-        'showTel' => '',  //页面显示
-        'kf' => false,
-        'icp' => '',
-        'copyright' => ''
-    );
-
-    $host = C('host');
-    foreach ($host as $k => $v) {
-        if ($k == $_SERVER['HTTP_HOST']) {
-            $data = $v;
-        }
-    }
-
-    $site_id = C('site_id');
-    if (!empty($campaign)) {
-        $channelData = C('channel');
-        $channel = $channelData[$site_id];
-        if (!empty($channel)) {
-            foreach ($channel as $k => $v) {
-                if ($k == $campaign) {
-                    $data = $v;
-                }
-            }
-        }
-    }
-//	if($site_id == '87' && empty($data['qq'])){
-//		$data['tel'] = '02022005555';
-//		$data['kf'] = true;
-//	}
-//	if($site_id == '14' && empty($data['tel'])){
-//		$data['tel'] = '02022005555';
-//	}
-
-    if (empty($data['icp'])) {
-        switch ($site_id) {
-            case '87':
-                $data['icp'] = '';
-                break;
-            case '14':
-                $data['icp'] = '';
-                break;
-        }
-    }
-    if (empty($data['copyright'])) {
-        switch ($site_id) {
-            case '87':
-                $data['copyright'] = '';
-                break;
-            case '14':
-                $data['copyright'] = '';
-                break;
-        }
-    }
-    $data['tel'] = '4006133093';
-    $data['showTel'] = '400-6133-093 / 020-2200-5555';
-    $data['isq'] = $site_id == 14 ?true : false;
-    
-    $resource = array_change_key_case(C('resource'), CASE_LOWER);
-    $data = array_merge($data, $resource);
-    return $data;
-}
-
 /**
  *    资源链接替换方法
  * @param $content    string 替换的内容
@@ -259,16 +160,6 @@ function arraySort($array = array(), $field = '', $direction = 'DESC')
     return $array;
 }
 
-/*
-*	检查是否为手机号码
-*	@Author 9009123 (Lemonice)
-*	@param string $mobile  手机号码
-*	@return true or false
-*/
-function isMobile($mobile)
-{
-    return preg_match('/^1[34578]\d{9}$/', $mobile) ? true : false;
-}
 
 /**
  * 统计在线人数

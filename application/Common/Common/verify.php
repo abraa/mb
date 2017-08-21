@@ -78,18 +78,18 @@ function getCode($expires = 0, $name = '', $length = 6, $type = 1){
     $code = $codeData['code'];
     if(empty($code)){
         $codes['code'] = verifyCode($length,$type);
-        $codes['time'] = \Common\Extend\Time::gmTime();
+        $codes['time'] = time();
         $codes['expires'] = $expires;
         session($codeKey,$codes);
         $code = $codes['code'];
     }else{
         if($expires > 0){
             $codeTime = $codeData['time'];
-            $nowTime = \Common\Extend\Time::gmTime();
+            $nowTime = time();
             $second = floor(($nowTime - $codeTime) % 86400); //计算生成验证码与当前时间差
             if($second > $expires){ //过期生成新的验证码
                 $codes['code'] = verifyCode($length,$type);
-                $codes['time'] = \Common\Extend\Time::gmTime();
+                $codes['time'] = time();
                 $codes['expires'] = $expires;
                 session($codeKey,$codes);
                 $code = $codes['code'];
@@ -114,7 +114,7 @@ function checkCode($code,$name = ''){
     }
     $expires = $codeData['expires'];
     $codeTime = $codeData['time'];
-    $nowTime = \Common\Extend\Time::gmTime();
+    $nowTime = time();
     $second = floor(($nowTime - $codeTime) % 86400); //计算生成验证码与当前时间差
     if($second > $expires){
         session($codeKey,null);
