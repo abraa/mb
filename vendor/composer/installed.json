@@ -1,0 +1,47 @@
+[
+    {
+        "name": "deepstreamhub/deepstream.io-client-php",
+        "version": "v1.0.1",
+        "version_normalized": "1.0.1.0",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/deepstreamIO/deepstream.io-client-php.git",
+            "reference": "c979ec7f5fde35f79c6f735bdc87811f7ea2f05c"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://files.phpcomposer.com/files/deepstreamIO/deepstream.io-client-php/c979ec7f5fde35f79c6f735bdc87811f7ea2f05c.zip",
+            "reference": "c979ec7f5fde35f79c6f735bdc87811f7ea2f05c",
+            "shasum": ""
+        },
+        "require": {
+            "php": ">=5.3.0|^7.0"
+        },
+        "time": "2017-07-03T08:56:34+00:00",
+        "type": "library",
+        "installation-source": "dist",
+        "autoload": {
+            "psr-4": {
+                "Deepstreamhub\\": "src/"
+            }
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "Apache-2.0"
+        ],
+        "authors": [
+            {
+                "name": "deepstreamHub GmbH",
+                "homepage": "https://deepstreamhub.com/"
+            }
+        ],
+        "description": "the php client for deepstreamHub",
+        "homepage": "https://github.com/deepstreamIO/deepstream.io-client-php",
+        "keywords": [
+            "datasync",
+            "pubsub",
+            "realtime",
+            "rpc"
+        ]
+    }
+]
