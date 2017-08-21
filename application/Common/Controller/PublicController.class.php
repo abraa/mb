@@ -12,10 +12,9 @@
  */
 namespace Common\Controller;
 
-use Think\Controller;
 use Common\Extend\Base\Config;
 
-class PublicController extends Controller {
+class PublicController extends InitController {
     public $jumpUrl = '';
 
     public function __construct() {

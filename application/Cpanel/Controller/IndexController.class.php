@@ -25,8 +25,6 @@ class IndexController extends CpanelController
         $userInfo = D('admin')->getRow(login('user_id'));
         formatTime($userInfo);
         $this->userInfo = $userInfo;
-        print_r(L());
-        exit;
         $this->display();
     }
 

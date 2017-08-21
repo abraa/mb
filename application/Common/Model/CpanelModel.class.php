@@ -11,10 +11,8 @@
  * ====================================
  */
 namespace Common\Model;
-use Think\Model;
 
-class CpanelModel extends Model{
-    protected $tablePrefix = 'py_';
+class CpanelModel extends InitModel {
 
     protected $_auto = array(
         array('create_time', 'time', self::MODEL_INSERT, 'function'),
