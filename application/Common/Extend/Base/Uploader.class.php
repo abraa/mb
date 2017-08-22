@@ -8,7 +8,6 @@
  * UEditor编辑器通用上传类
  */
 namespace Common\Extend\Base;
-use Common\Extend\Base\Cupload;
 class Uploader
 {
     private $fileField; //文件域名
@@ -142,28 +141,6 @@ class Uploader
 			}
 			$image->save($this->filePath);  //保存图片会原来的路径
 		}
-
-//        $ret = Cupload::uploadApi($_FILES, '', array('imgtype' => $_GET['savePath'] ? $_GET['savePath'] : 'other'));
-////         var_dump($ret);exit;
-//        if(is_array($ret) && $ret['error'] === 0){
-//            $this->stateInfo = 'SUCCESS';
-//            $this->fullName = $ret['data']['url'];
-//            if (!$ret['data']['url']){
-//            	$fullarr = array();
-//            	$filearr = array();
-//            	foreach ($ret['data'] as $v){
-//            		$fullarr[] = $v['url'];
-//            		$filearr[] = $v['savename'];
-//            	}
-//            	$this->fullName = $fullarr;
-//            	$this->fileName = $filearr;
-//            }else{
-//            	$this->fullName = array($ret['data']['url']);
-//            	$this->fileName = array($ret['data']['savename']);
-//            }
-//        }else{
-//            $this->stateInfo = "上传失败";
-//        }
     }
 
     /**

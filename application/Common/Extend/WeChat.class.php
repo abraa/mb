@@ -9,7 +9,6 @@
  */
 namespace Common\Extend;
 
-use Common\Extend\Base\Curl;
 
 class WeChat
 {
@@ -20,6 +19,7 @@ class WeChat
     private static $open_id;
     private static $weChat_id;
     private static $weChatApiUrl = 'https://api.weixin.qq.com';
+    private static $weChatOpenUrl = 'https://open.weixin.qq.com';
 
 
     /**
@@ -34,7 +34,7 @@ class WeChat
                 'appid' => self::$app_id,
                 'secret' => self::$app_secret,
             );
-            $ret = static::getData('cgi-bin/token', $param);
+            $ret = static::getData('cgi-bin/token', $param, 'get');
             if (!empty($ret)) {
                 $data = json_decode($ret, true);
                 self::$access_token = $data['access_token'];
@@ -56,12 +56,69 @@ class WeChat
             'openid' => $openId,
             'lang' => 'zh_CN',
         );
-        $ret = self::getData('/user/info', $param);
+        $ret = self::getData('user/info', $param);
         $data = json_decode($ret, true);
         if (isset($data['errcode']) && $data['errcode'] == 0) {
             return $data;
         }
         return array();
+    }
+
+    /**
+     * 获取openId
+     * @param string $redirect_uri
+     * @param string $state
+     * @return null
+     */
+    public static function getOpenId($redirect_uri = '', $state = '')
+    {
+        $redirect_uri = empty($redirect_uri) ? 'http://' . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'] : $redirect_uri;
+        $code = empty($_REQUEST['code']) ? null : trim($_REQUEST['code']);
+        if (empty($code)) {
+            self::getCode('snsapi_base', $redirect_uri, $state);
+        } else {
+            $param = array(
+                'appid' => self::$app_id,
+                'secret' => self::$app_secret,
+                'code' => $code,
+                'grant_type' => 'authorization_code'
+            );
+            $ret = self::getData('sns/oauth2/access_token', $param, 'get');
+            $data = json_decode($ret, true);
+            $openid = isset($data['openid']) && !empty($data['openid']) ? $data['openid'] : null;
+            if(empty($openid)){
+                self::getCode('snsapi_userinfo', $redirect_uri, $state);
+            }
+            return $openid;
+        }
+    }
+
+    /**
+     * 获取code
+     * @param $scope
+     * @param $redirect_uri
+     * @param $state
+     */
+    private function getCode($scope, $redirect_uri, $state)
+    {
+        $state = (!empty($state) && strlen($state) <= 128 && preg_match('/^[A-Za-z0-9]+$/', $state)) ? $state : 'state';
+        $param = array(
+            'appid' => self::$app_id,
+            'redirect_uri' => $redirect_uri,
+            'response_type' => 'code',
+            'scope' => $scope,
+            'state' => $state . '#wechat_redirect'
+        );
+        $buff = '';
+        ksort($param);
+        foreach ($param as $k => $v) {
+            $buff .= $k . '=' . $v . '&';
+        }
+        if (strlen($buff) > 0) {
+            $buff = substr($buff, 0, strlen($buff) - 1);
+        }
+        $url = self::$weChatOpenUrl . '/connect/oauth2/authorize?' . $buff;
+        header("Location: $url");  //跳转过去，为了获取code
     }
 
 
@@ -73,22 +130,13 @@ class WeChat
      * @param int $debug 打印错误
      * @return bool|Base\错误返回
      */
-    private function getData($instruct, $data = array(), $method = 'POST', $debug = 0)
+    private function getData($instruct, $data = array(), $method = 'POST')
     {
-        $curl = new Curl();
         $url = self::$weChatApiUrl . "/" . $instruct;
-        if (strtolower($method) == 'post') {
-            $ret = $curl->post($url, $data);
-        } else {
-            $ret = $curl->get($url, $data);
-        }
+        $ret = Curl::request($url, $data, '', $method);
         if ($ret) {
             return $ret;
         } else {
-            if ($debug) {
-                echo '错误码：' . $curl->errno() . ',错误信息' . $curl->error();
-                exit;
-            }
             return false;
         }
     }
