@@ -1,0 +1,30 @@
+<form data-url="{:U('save')}" method="post" class="form">
+    <fieldset class="fixed">
+    <table>
+        <tr>
+            <th>所属职位：</th>
+            <td>
+                <input class="easyui-combotree" name="position_id" data-options="url:'{:U('getPositionIdTree?type=select')}'" size="35">
+            </td>
+        </tr>
+        <tr>
+            <th>员工名称：</th>
+            <td><input name="employee_name" class="easyui-textbox" size="35" data-options="required:true"></td>
+        </tr>
+        <tr>
+            <th>员工工号：</th>
+            <td><input name="employee_id" class="easyui-textbox" size="35" data-options="required:true"></td>
+        </tr>
+       
+        <tr>
+            <th>显示：</th>
+            <td>
+                <input type="radio" name="display" checked="checked" value="1">是
+                <input type="radio" name="display" value="0">否
+            </td>
+        </tr>
+    </table>
+    <input type="hidden" name="id" value="0">
+    </fieldset>
+</form>
+

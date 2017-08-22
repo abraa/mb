@@ -6,7 +6,6 @@
 #  RewriteRule ^$ /web/index.html [L]
 #  RewriteRule ^([a-zA-Z0-9_\-]+)\.html$ /release/$1.html [L]
 
-  RewriteRule ^(Home/ShowQrCode.*)+\.jpg$ index.php [QSA,PT,L,E=PATH_INFO:$1]
   RewriteCond %{REQUEST_FILENAME} !-d
   RewriteCond %{REQUEST_FILENAME} !-f
 
