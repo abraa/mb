@@ -56,9 +56,9 @@ class WeChat
             'openid' => $openId,
             'lang' => 'zh_CN',
         );
-        $ret = self::getData('user/info', $param);
+        $ret = self::getData('cgi-bin/user/info', $param, 'GET');
         $data = json_decode($ret, true);
-        if (isset($data['errcode']) && $data['errcode'] == 0) {
+        if ($data['errcode'] == 0) {
             return $data;
         }
         return array();
@@ -72,6 +72,10 @@ class WeChat
      */
     public static function getOpenId($redirect_uri = '', $state = '')
     {
+        $openid = isset($_SESSION['sopenid']) ? $_SESSION['sopenid'] : '';
+        if(!empty($openid)){
+            return $openid;
+        }
         $redirect_uri = empty($redirect_uri) ? 'http://' . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'] : $redirect_uri;
         $code = empty($_REQUEST['code']) ? null : trim($_REQUEST['code']);
         if (empty($code)) {
@@ -89,6 +93,7 @@ class WeChat
             if(empty($openid)){
                 self::getCode('snsapi_userinfo', $redirect_uri, $state);
             }
+            $_SESSION['sopenid'] = $openid;
             return $openid;
         }
     }

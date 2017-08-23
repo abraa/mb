@@ -9,6 +9,10 @@
             <td id="employee_name"></td>
         </tr>
         <tr>
+            <th>评价人：</th>
+            <td id="nickname"></td>
+        </tr>
+        <tr>
             <th>是否满意：</th>
             <td id="is_satisfy"></td>
         </tr>
@@ -33,6 +37,9 @@ function setData(data) {
 	}
 	if(!empty(data.employee_name)) {
 		$('#employee_name').html(data.employee_name);
+	}
+	if(!empty(data.nickname)) {
+		$('#nickname').html(data.nickname);
 	}
 	if(!empty(data.is_satisfy)) {
 		$('#is_satisfy').html((data.is_satisfy==1 ? '<font color=green>满意</font>' : '<font color=red>不满意</font>'));

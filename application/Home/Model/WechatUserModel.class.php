@@ -1,17 +1,17 @@
 <?php
 /**
  * ====================================
- * 发型师模型
+ * 微信用户表
  * ====================================
  * Author: 9009123
  * Date: 2017/08/22 18:08
  * ====================================
- * File: EmployeeModel.class.php
+ * File: WechatUserModel.class.php
  * ====================================
  */
 namespace Home\Model;
 use Common\Model\HomeModel;
 
-class EmployeeModel extends HomeModel {
+class WechatUserModel extends HomeModel {
 
 }

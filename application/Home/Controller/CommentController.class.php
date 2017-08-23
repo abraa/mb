@@ -11,12 +11,24 @@
  */
 namespace Home\Controller;
 use Think\Controller;
+use Common\Extend\WeChat;
 
 class CommentController extends Controller {
     /**
      * 微信理发师评论
      */
     public function HaircutWechat(){
+        $openid = WeChat::getOpenId();
+        $user_info = WeChat::getWeChatInfo($openid);
+        if(!empty($user_info)){
+            $WechatUserModel = D('WechatUser');
+            $id = $WechatUserModel->where(array('openid'=>$openid))->getField('id');
+            if($id > 0){
+                $WechatUserModel->where(array('id'=>$id))->save($user_info);
+            }else{
+                $WechatUserModel->add($user_info);
+            }
+        }
         if(IS_POST && IS_AJAX){
             $employee_id = I('post.employee_id','','trim');
             $is_satisfy = I('post.is_satisfy',0,'intval');
@@ -47,6 +59,7 @@ class CommentController extends Controller {
                 $tag_ids[] = $tag['id'];
             }
             $data = array(
+                'openid'=>$openid,
                 'employee_id'=>$employee_id,
                 'employee_name'=>$employee_name,
                 'content'=>(empty($content) ? '' : $content),

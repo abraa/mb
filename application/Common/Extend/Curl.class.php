@@ -34,6 +34,8 @@ class Curl
         if (self::$proxy) curl_setopt($ch, CURLOPT_PROXY, self::$proxy);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
         curl_setopt($ch, CURLOPT_FOLLOWLOCATION, 1);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER,FALSE);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYHOST,FALSE);
         $result = curl_exec($ch);
         curl_close($ch);
         return $result;
@@ -59,6 +61,8 @@ class Curl
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
         curl_setopt($ch, CURLOPT_FOLLOWLOCATION, 1);
         curl_setopt($ch, CURLOPT_POST, 1);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER,FALSE);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYHOST,FALSE);
         $result = curl_exec($ch);
         curl_close($ch);
         return $result;
@@ -90,6 +94,8 @@ class Curl
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
         curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, self::$timeOut);
         curl_setopt($ch, CURLOPT_HTTPHEADER, array('Expect:'));
+        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER,FALSE);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYHOST,FALSE);
 
         if (!empty($cookieString)) {
             curl_setopt($ch, CURLOPT_COOKIE, $cookieString);
