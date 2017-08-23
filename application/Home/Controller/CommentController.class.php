@@ -36,15 +36,15 @@ class CommentController extends Controller {
             $content = I('post.content','','trim');
 
             if(empty($employee_id)){
-                $this->error('请确认发型师工号！');
+                $this->error('请确认工号！');
             }
             $tag_list = !empty($tag_list) ? json_decode($tag_list) : array();
             if(empty($tag_list)){
-                $this->error('请对发型师选择一些适合的标签！');
+                $this->error('请选择一些适合的标签！');
             }
             $employee_name = D('Employee')->where(array('employee_id'=>$employee_id))->getField('employee_name');
             if(empty($employee_name)){
-                $this->error('当前发型师工号不存在！');
+                $this->error('当前工号不存在！');
             }
             $tag_ids = array();
             foreach($tag_list as $tag){

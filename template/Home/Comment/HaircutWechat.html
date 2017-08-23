@@ -220,10 +220,10 @@ function getHaircutInfo(){
 		success: function(json){
 			if(json.info && json.info.employee_name != 'undefined' && json.info.employee_name != undefined){
 				employee_name = json.info.employee_name ? json.info.employee_name : '';
-				$('#hair_stylist').html('<span>发型师：'+json.info.employee_name+'</span><span>工号：'+json.info.employee_id+'</span>').removeClass('display');
+				$('#hair_stylist').html('<span>名称：'+json.info.employee_name+'</span><span>工号：'+json.info.employee_id+'</span>').removeClass('display');
 				$('#comfirm_error_msg').addClass('display');
 			}else{
-				$('#comfirm_error_msg').css('color','red').html('没有该发型师!');
+				$('#comfirm_error_msg').css('color','red').html('没有该工号!');
 			}
 			getHaircutInfoLock = false;
 		}
@@ -236,12 +236,12 @@ function dosubmit(obj){
 	}
 	var employee_id = $.trim($('#employee_id').val());
 	if(employee_id == '' || employee_name == ''){
-		alert('请确认发型师工号！');
+		alert('请确认工号！');
 		submitLock = false;
 		return false;
 	}
 	if($('.detail .clearfix ul li[check="1"]').length <= 0){
-		alert('请对发型师选择一些适合的标签！');
+		alert('请选择一些适合的标签！');
 		submitLock = false;
 		return false;
 	}
