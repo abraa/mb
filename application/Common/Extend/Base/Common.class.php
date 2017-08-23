@@ -36,7 +36,7 @@ class Common {
      * @return int
      */
     public static function isMobile($phone) {
-        return isMobile($phone);
+        return is_phone($phone);
     }
 
     /**
@@ -45,7 +45,8 @@ class Common {
      * @return int
      */
     public static function isEmail($string) {
-        return preg_match("/^[\w\-\.]+@[\w\-\.]+(\.\w+)+$/", $string);
+        return is_email($string);
+
     }
 
     /**
