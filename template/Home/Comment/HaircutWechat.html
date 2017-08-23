@@ -270,7 +270,7 @@ function dosubmit(obj){
 		success: function(json){
 			if(json.status == 1){
 				alert('提交成功，感谢您宝贵的意见！');
-				window.location.reload();
+				closeWindow();
 				return false;
 			}
 			alert(json.info);
@@ -278,6 +278,31 @@ function dosubmit(obj){
 			submitLock = false;
 		}
 	});
+}
+function isWechat(){
+	var ua = navigator.userAgent.toLowerCase();
+	if(ua.match(/MicroMessenger/i)=="micromessenger") {
+		return true;
+	} else {
+		return false;
+	}
+}
+function isAlipay(){
+	var ua = navigator.userAgent.toLowerCase();
+	if(ua.match(/Alipay/i)=="alipay") {
+		return true;
+	} else {
+		return false;
+	}
+}
+function closeWindow(){
+	if(isWechat()){
+		WeixinJSBridge.call('closeWindow');
+	}else if(isAlipay()){
+		AlipayJSBridge.call('closeWebview');
+	}else{
+		window.close();
+	}
 }
 //保持会话活跃
 setInterval(function(){
