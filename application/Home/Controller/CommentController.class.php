@@ -36,8 +36,8 @@ class CommentController extends Controller {
             $content = I('post.content','','trim');
 
             $count = D('Comment')->where(array('openid'=>$openid,'create_time'=>array('EGT',(time() - 15*60))))->count();
-            if($count){
-
+            if($count >= 3){
+                $this->error('您好，请不要频繁提交，15分钟内只能提交3次！');
             }
             if(empty($employee_id)){
                 $this->error('请确认工号！');
