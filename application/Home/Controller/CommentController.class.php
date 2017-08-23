@@ -35,6 +35,10 @@ class CommentController extends Controller {
             $tag_list = I('post.tag_list','','trim');
             $content = I('post.content','','trim');
 
+            $count = D('Comment')->where(array('openid'=>$openid,'create_time'=>array('EGT',(time() - 15*60))))->count();
+            if($count){
+
+            }
             if(empty($employee_id)){
                 $this->error('请确认工号！');
             }

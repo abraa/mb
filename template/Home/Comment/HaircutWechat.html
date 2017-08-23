@@ -279,4 +279,14 @@ function dosubmit(obj){
 		}
 	});
 }
+//保持会话活跃
+setInterval(function(){
+	$.ajax({
+		type: "POST",
+		dataType: 'JSON',
+		url: "/Comment/HaircutWechat.json",
+		error: function(XMLHttpRequest, textStatus, errorThrown){},
+		success: function(json){}
+	});
+},600000);
 </script>
