@@ -9,6 +9,107 @@
  * File: verify.php
  * ====================================
  */
+
+/**
+ * 生成excel
+ * @param array $data 数组参数 格式($data = array('title'=>array(),'data'=>array()))
+ * @param $fileName 文件名称，不带后缀
+ * @return bool
+ * @throws Exception
+ */
+function export_data($data = array(), $fileName = '') {
+    if (empty($data)) return false;
+
+    $date = date("Y_m_d", time());
+    $fileName = (!empty($fileName) ? $fileName : $date) . ".xlsx";
+
+
+    foreach ($data['data'] as $key => $value) { //比较字符串的长度,生成最大长度数组
+        static $newData = array();
+        foreach ($value as $k => $v) {
+            if (empty($newData)) {
+                $newData = $value;
+            } else {
+                if (mb_strlen($newData[$k], 'utf8') < mb_strlen($v, 'utf8')) {
+                    $newData[$k] = $v;
+                }
+            }
+        }
+    }
+    $newArr = array();
+    foreach ($newData as $v) {  //替换键值，与标题做对比
+        $newArr[] = $v;
+    }
+
+    vendor("PHPExcel.PHPExcel");
+    $objPHPExcel = new \PHPExcel();
+    $objPHPExcel->getProperties();
+
+    $key = ord("A");
+    $key_s = ord("A");
+
+    $str = array();
+    foreach ($data['title'] as $k => $v) {
+        $colum = chr($key);
+        if($key>90  && $key_s<=90){
+            $colum = 'A'.chr($key_s);
+            $key_s++;
+        }
+
+        if (mb_strlen($newArr[$k], 'utf8') < mb_strlen($v, 'utf8')) {  //与标题比较的长度,获取生成excel每一列的最大长度
+            $str[$colum] = $v;
+        } else {
+            $str[$colum] = $newArr[$k];
+        }
+
+
+        $objPHPExcel->setActiveSheetIndex(0)->setCellValue($colum . '1', $v);
+        $key += 1;
+    }
+
+
+    foreach ($str as $k => $v) {  //判断是否存在中文，产生最适合长度
+        if (preg_match("/([\x81-\xfe][\x40-\xfe])/", $v, $match)) {
+            $width = mb_strlen($v, 'utf8');
+            $strArr[$k] = $width >= 4 ? ($width >= 10 ? $width * 2.2 : $width * 2) : 12;
+        } else {
+            $strArr[$k] = mb_strlen($v, 'utf8');
+        }
+
+    }
+
+    $column = 2;
+    $objActSheet = $objPHPExcel->getActiveSheet();
+
+    foreach ($data['data'] as $key => $rows) {
+        $span = ord("A");
+        $key_s = ord("A");
+        foreach ($rows as $keyName => $value) {
+            $j = chr($span);
+            if($span>90 && $key_s<=90){
+                $j = 'A'.chr($key_s);
+                $key_s++;
+            }
+            $strArr[$j] = $strArr[$j] < 80 ? $strArr[$j]: 80;
+            $objActSheet->getColumnDimension($j)->setWidth(($strArr[$j] + 1));  //设置每列的长度
+            $objActSheet->setCellValue($j . $column, $value);  //赋值
+            $span++;
+        }
+        $column++;
+    }
+
+    $fileName = iconv("utf-8", "gb2312", $fileName); //转码
+    $objPHPExcel->setActiveSheetIndex(0);
+
+    header('Content-Type: application/vnd.ms-excel');
+    header("Content-Disposition: attachment;filename=\"$fileName\"");
+    header('Cache-Control: max-age=0');
+
+    $objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel2007');
+    $objWriter->save('php://output'); //文件通过浏览器下载
+    return true;
+}
+
 /**
  * 获取当前完整路径
  * @return string

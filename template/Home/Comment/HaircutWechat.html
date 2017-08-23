@@ -1,0 +1,282 @@
+<!DOCTYPE HTML>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1, maximum-scale=1,user-scalable=no">
+<meta content="yes" name="apple-mobile-web-app-capable" />  
+<meta content="black" name="apple-mobile-web-app-status-bar-style" />  
+<meta content="telephone=no" name="format-detection" />
+<title>客户评价</title>
+<link href="/static/style/font-awesome.min.css" rel="stylesheet" />
+<style type="text/css">
+	/* reset */
+	*{margin:0;padding:0;}
+	body{font:1em "微软雅黑","Open Sans",Arial,"Hiragino Sans GB","Microsoft YaHei","STHeiti","WenQuanYi Micro Hei",SimSun,sans-serif;color:#333;background: #FFF;}
+	img{border:none;}
+	em,strong{font-style:normal;font-weight:normal;}
+	li{list-style:none;}
+	table {border-collapse:collapse;border-spacing:0;}
+	h4, h5, h6{font-size:100%;}
+	a {text-decoration:none; }
+	q:before,q:after{content:"";}
+	button,input,select,textarea{font-family:inherit;font-size:100%;margin:0;}
+	input,button,textarea,select,optgroup,option{font-family:inherit;font-size:inherit;font-style:inherit;font-weight:inherit; font-size:0.8em;}
+	address,cite,dfn,em,var{font-style:normal;}
+
+	body{font:500 20px/1rem Verdana,Arial,"Microsoft YaHei",SimSun;color:#333;}
+	.clearfix:after{display: block;content: '';height: 0;overflow: hidden;clear: both;}
+
+	html {font-size : 20px;}
+	@media only screen and (max-width: 320px){html {font-size: 20px;}}
+	@media only screen and (device-width: 360px){html {font-size: 22.5px;}}
+	@media screen and (device-width: 375px){html {font-size: 23.4375px;}}
+	@media only screen and (min-width: 401px){html {font-size: 25px;}}
+	@media screen and (device-width: 414px){html {font-size: 25.875px;}}
+	@media only screen and (min-width: 428px){html { font-size: 26.75px; }}
+	@media only screen and (min-width: 481px){html {font-size: 30px; }}
+	@media only screen and (min-width: 569px){html { font-size: 35px; }}
+	@media only screen and (min-width: 640px){html {font-size: 40px; }}
+
+	.main{max-width: 640px;margin: 0 auto;width: 100%;left: 0;top: 0;right: 0;background: #fff;height: 100%;}
+	.top{padding: 10% 10% 0;}
+	.top span{line-height: 1.2rem;display: block;}
+	.top span:nth-of-type(1){font-size: 0.8rem; margin-bottom: 0.4rem;}
+	.top span:nth-of-type(2){font-size: 0.8rem;}
+	.tobe{text-align: center;}
+	.tobe{padding: 1rem 0;border-top: 1px solid #e5e5e5;border-bottom: 1px solid #e5e5e5;margin: 1rem 0;}
+	.tobe span{display: inline-block;width: 32%;text-align: center;font-size: 0.7rem;border: 1px solid #e5e5e5;padding: 0.2rem 0.4rem;}
+	.tobe span:nth-of-type(2){margin-left: 0.8rem;}
+	.detail>p{text-align: center;font-size: 0.7rem;}
+	.detail ul{width: 80%;margin: 0 auto;}
+	.detail ul li{float: left;padding: 0.2rem 0;margin: 0.4rem 0 0.8rem;border: 1px solid #e5e5e5;font-size: 0.7rem;color: #afafaf;width: 46%;text-align: center;}
+	.detail ul li:nth-child(2n){margin-left: 0.8rem;}
+	.saysome{width: 80%;margin: 0 auto;}
+	.saysome textarea{display: block;width: 100%;min-height: 3rem;background: #f3f4f6;color: #cacbcd;padding: 0.1rem;}
+	.btn_submit{display: block;width: 80%;margin: 1rem auto 0;height: 1.2rem;height: 1.8rem;line-height: 1.8rem;background: #4a4c5b;text-align: center;font-size: 0.75rem;color: #fff;border-radius: 0.2rem;}
+	.display{ display:none;}
+	.comfirm_button{ height:1.3rem; line-height:1.3rem; width:3rem; display:inline-block;}
+	font.error_msg{ color:red; font-size:0.8em;}
+	.tobe span.act,.clearfix .act{ border:#C30 1px solid;}
+	.loading{
+		width: 100%;
+		height: 1.2em;
+		margin: 0 auto;
+		margin-top:8em;
+		text-align:center;
+	}
+	.loading span{
+		display: inline-block;
+		width: 0.35em;
+		height: 100%;
+		border-radius: 4px;
+		background: lightgreen;
+		margin-left:4px;
+		-webkit-animation: load 1s ease infinite;
+	}
+	@-webkit-keyframes load{
+		0%,100%{
+			height: 40px;
+			background: lightgreen;
+		}
+		50%{
+			height: 70px;
+			margin: -15px 0;
+			background: lightblue;
+		}
+	}
+	.loading span:nth-child(2){
+		-webkit-animation-delay:0.2s;
+	}
+	.loading span:nth-child(3){
+		-webkit-animation-delay:0.4s;
+	}
+	.loading span:nth-child(4){
+		-webkit-animation-delay:0.6s;
+	}
+	.loading span:nth-child(5){
+		-webkit-animation-delay:0.8s;
+	}
+</style>
+<script type="application/javascript" language="javascript" src="/static/js/jquery.min.js"></script>
+</head>
+<body>
+	<div class="main">
+		<div class="top">
+        	工号:
+        	<input type="text" id="employee_id" name="employee_id" value="" placeholder="请输入工号..." style=" width:10em;" />
+            <a class="btn_submit comfirm_button" onClick="getHaircutInfo(this);"><font class="fa fa-check">&nbsp;</font>确认</a>
+            <font class="error_msg display" id="comfirm_error_msg"></font>
+            <br /><br />
+			<p id="hair_stylist" class="display"></p>
+		</div>
+		<div class="tobe">
+			<span satisfy="1" onClick="changeSatisfy(this)"><font class="fa fa-thumbs-o-up">&nbsp;</font>满意</span>
+			<span satisfy="0" onClick="changeSatisfy(this)"><font class="fa fa-thumbs-o-down">&nbsp;</font>不满意</span>
+		</div>
+        <div class="loading display">
+        	<span></span><span></span><span></span><span></span><span></span>
+        </div>
+		<div class="detail display">
+			<div class="clearfix">
+				<ul></ul>
+			</div>
+			<p class="saysome">
+            	<p class="saysome"><textarea placeholder="其他想说的..." id="content"></textarea></p>
+            </p>
+			<a class="btn_submit" onClick="dosubmit(this);">提交</a>
+		</div>
+	</div>
+</body>
+</html>
+<script>
+var default_tag_number = 5;  //最多选择多少个标签
+var satisfy = 0;
+var employee_name = '';
+function changeSatisfy(obj){
+	satisfy = $(obj).attr('satisfy');
+	$('.tobe span').removeClass('act');
+	$(obj).addClass('act');
+	getTag();
+}
+function checkTagNumber(be_alert){
+	if($('.detail .clearfix ul li[check="1"]').length >= default_tag_number){
+		if(be_alert == true) alert('只能选择'+default_tag_number+'个标签！');
+		return false;
+	}
+	return true;
+}
+function checkTag(obj){
+	var check = $(obj).attr('check');
+	if(checkTagNumber() == false && check != '1'){
+		return false;
+	}
+	if(check == '1'){
+		$(obj).removeClass('act');
+	}else{
+		$(obj).addClass('act');
+	}
+	$(obj).attr('check', (check == '1' ? '0' : '1'));
+}
+function parseTag(tag_name, act){
+	tag_name = tag_name.replace('"','”');
+	$('.detail .clearfix ul').append('<li tag_name="'+tag_name+'" onclick="checkTag(this);"'+(act==true ? ' check="1" class="act"' : '')+'><font class="fa '+(satisfy>0 ? 'fa-star' : 'fa-star-o')+'">&nbsp;</font>'+tag_name+'</li>');
+}
+var getTagLock = false;
+var tagList = new Array();
+function getTag(){
+	if(getTagLock == true){
+		return false;
+	}
+	$('.loading').removeClass('display').html('<i></i><i></i><i></i><i></i><i></i>');
+	$('.detail').addClass('display');
+	getTagLock = true;
+	$.ajax({
+		type: "POST",
+		dataType: 'JSON',
+		url: "/Comment/getTag.json",
+		data: "satisfy="+satisfy,
+		error: function(XMLHttpRequest, textStatus, errorThrown){
+			$('.loading').removeClass('display').css('color','red').html('<span style=" display:block; text-align:center;">查询出错了，请重试！</span>');
+			getTagLock = false;
+		},
+		success: function(json){
+			var data = json.info ? json.info : [];
+			$('.loading').addClass('display');
+			$('.detail .clearfix ul').html('');
+			if(data.length > 0){
+				for(var i=0;i<data.length;i++){
+					parseTag(data[i].tag_name);
+				}
+				tagList[satisfy] = data;
+			}
+			$('.detail').removeClass('display');
+			getTagLock = false;
+		}
+	});
+}
+var getHaircutInfoLock = false;
+function getHaircutInfo(){
+	if(getHaircutInfoLock == true){
+		return false;
+	}
+	$('#comfirm_error_msg').css('color','blue').html('正在查询...').removeClass('display');
+	$('#hair_stylist').addClass('display');
+	getHaircutInfoLock = true;
+	var employee_id = $('#employee_id').val();
+	if($.trim(employee_id) == ''){
+		$('#comfirm_error_msg').css('color','red').html('工号输入错误！').removeClass('display');
+		getHaircutInfoLock = false;
+		return false;
+	}
+	$.ajax({
+		type: "POST",
+		dataType: 'JSON',
+		url: "/Comment/HaircutInfo.json",
+		data: "employee_id="+employee_id,
+		error: function(XMLHttpRequest, textStatus, errorThrown){
+			$('#comfirm_error_msg').css('color','red').html('查询出错了，请重试！');
+			getHaircutInfoLock = false;
+		},
+		success: function(json){
+			if(json.info && json.info.employee_name != 'undefined' && json.info.employee_name != undefined){
+				employee_name = json.info.employee_name ? json.info.employee_name : '';
+				$('#hair_stylist').html('<span>发型师：'+json.info.employee_name+'</span><span>工号：'+json.info.employee_id+'</span>').removeClass('display');
+				$('#comfirm_error_msg').addClass('display');
+			}else{
+				$('#comfirm_error_msg').css('color','red').html('没有该发型师!');
+			}
+			getHaircutInfoLock = false;
+		}
+	});
+}
+var submitLock = false;
+function dosubmit(obj){
+	if(submitLock == true){
+		return false;
+	}
+	var employee_id = $.trim($('#employee_id').val());
+	if(employee_id == '' || employee_name == ''){
+		alert('请确认发型师工号！');
+		submitLock = false;
+		return false;
+	}
+	if($('.detail .clearfix ul li[check="1"]').length <= 0){
+		alert('请对发型师选择一些适合的标签！');
+		submitLock = false;
+		return false;
+	}
+	var select_tag = new Array();
+	for(var i=0;i<tagList[satisfy].length;i++){
+		if($('.detail .clearfix ul li[check="1"][tag_name="'+tagList[satisfy][i].tag_name+'"]').length > 0){
+			select_tag.push(tagList[satisfy][i]);
+		}
+	}
+	select_tag = JSON.stringify(select_tag);
+	var content = $.trim($('#content').val());
+	content = content ? content : '';
+	
+	$(obj).html('请稍等...');
+	submitLock = true;
+	$.ajax({
+		type: "POST",
+		dataType: 'JSON',
+		url: "/Comment/HaircutWechat.json",
+		data: {employee_id:employee_id,is_satisfy:satisfy,tag_list:select_tag,content:content},
+		error: function(XMLHttpRequest, textStatus, errorThrown){
+			alert('提交出错了，请重试！');
+			$(obj).html('提交');
+			submitLock = false;
+		},
+		success: function(json){
+			if(json.status == 1){
+				alert('提交成功，感谢您宝贵的意见！');
+				window.location.reload();
+				return false;
+			}
+			alert(json.info);
+			$(obj).html('提交');
+			submitLock = false;
+		}
+	});
+}
+</script>

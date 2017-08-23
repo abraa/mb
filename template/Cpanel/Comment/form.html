@@ -1,0 +1,50 @@
+<fieldset class="fixed">
+    <table class="form container">
+        <tr>
+            <th width="80">员工工号：</th>
+            <td id="employee_id"></td>
+        </tr>
+        <tr>
+            <th>员工姓名：</th>
+            <td id="employee_name"></td>
+        </tr>
+        <tr>
+            <th>是否满意：</th>
+            <td id="is_satisfy"></td>
+        </tr>
+        <tr>
+            <th>评价时间：</th>
+            <td id="create_time"></td>
+        </tr>
+        <tr>
+            <th valign="top">评价标签：</th>
+            <td id="tag_names"></td>
+        </tr>
+        <tr>
+            <th>评价内容：</th>
+            <td id="content"></td>
+        </tr>
+    </table>
+</fieldset>
+<script type="text/javascript">
+function setData(data) {
+	if(!empty(data.employee_id)) {
+		$('#employee_id').html(data.employee_id);
+	}
+	if(!empty(data.employee_name)) {
+		$('#employee_name').html(data.employee_name);
+	}
+	if(!empty(data.is_satisfy)) {
+		$('#is_satisfy').html((data.is_satisfy==1 ? '<font color=green>满意</font>' : '<font color=red>不满意</font>'));
+	}
+	if(!empty(data.tag_names)) {
+		$('#tag_names').html(data.tag_names);
+	}
+	if(!empty(data.create_time)) {
+		$('#create_time').html(data.create_time);
+	}
+	if(!empty(data.content)) {
+		$('#content').html(data.content);
+	}
+}
+</script>
