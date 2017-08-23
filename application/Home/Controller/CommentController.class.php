@@ -18,20 +18,7 @@ class CommentController extends Controller {
      * 微信理发师评论
      */
     public function HaircutWechat(){
-        $openid = WeChat::getOpenId();
-        if(empty($openid)){
-            $this->error('请在微信客户端打开链接');
-        }
-        $user_info = WeChat::getWeChatInfo($openid);
-        if(!empty($user_info)){
-            $WechatUserModel = D('WechatUser');
-            $id = $WechatUserModel->where(array('openid'=>$openid))->getField('id');
-            if($id > 0){
-                $WechatUserModel->where(array('id'=>$id))->save($user_info);
-            }else{
-                $WechatUserModel->add($user_info);
-            }
-        }
+        $openid = $this->getOpenid();
         if(IS_POST && IS_AJAX){
             $employee_id = I('post.employee_id','','trim');
             $is_satisfy = I('post.is_satisfy',0,'intval');
@@ -111,6 +98,31 @@ class CommentController extends Controller {
             }
         }
         $this->success($data);
+    }
+
+    /**
+     * 获取openid
+     * @return null
+     */
+    private function getOpenid(){
+        if(isCheckWechat() === false){
+            $this->error('请在微信客户端打开链接');
+        }
+        $openid = WeChat::getOpenId();
+        if(empty($openid)){
+            $this->error('请在微信客户端打开链接');
+        }
+        $user_info = WeChat::getWeChatInfo($openid);
+        if(!empty($user_info)){
+            $WechatUserModel = D('WechatUser');
+            $id = $WechatUserModel->where(array('openid'=>$openid))->getField('id');
+            if($id > 0){
+                $WechatUserModel->where(array('id'=>$id))->save($user_info);
+            }else{
+                $WechatUserModel->add($user_info);
+            }
+        }
+        return $openid;
     }
 
     /**
