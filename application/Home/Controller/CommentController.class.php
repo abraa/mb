@@ -19,6 +19,9 @@ class CommentController extends Controller {
      */
     public function HaircutWechat(){
         $openid = WeChat::getOpenId();
+        if(empty($openid)){
+            $this->error('请在微信客户端打开链接');
+        }
         $user_info = WeChat::getWeChatInfo($openid);
         if(!empty($user_info)){
             $WechatUserModel = D('WechatUser');
