@@ -14,6 +14,28 @@ use Think\Controller;
 use Common\Extend\WeChat;
 
 class CommentController extends Controller {
+    public function test1(){
+        $page = I('request.page',1,'intval');
+        $pageSize = I('request.pageSize',10,'intval');
+        $field = I('request.field','*','trim');
+        $openid = I('request.openid','','trim');
+
+        $count = I('request.count',null,'intval');
+
+        $CommentOrder = D('WechatUser');
+        $where = array();
+        if(!empty($openid)){
+            $where['openid'] = $openid;
+        }
+        if(is_null($count)){
+            $list = $CommentOrder->field($field)->where($where)->page($page, $pageSize)->order('id desc')->select();
+        }else{
+            $list = $CommentOrder->field($field)->where($where)->page($page, $pageSize)->order('id desc')->count();
+        }
+        echo '<pre>';
+        print_r($list);
+        die;
+    }
     /**
      * 微信理发师评论
      */
@@ -106,7 +128,7 @@ class CommentController extends Controller {
      */
     private function getOpenid(){
         if(isCheckWechat() === false){
-            $this->error('请在微信客户端打开链接');
+            //$this->error('请在微信客户端打开链接');
         }
 //        $openid = WeChat::getOpenId();
 
