@@ -108,11 +108,12 @@ class CommentController extends Controller {
         if(isCheckWechat() === false){
             $this->error('请在微信客户端打开链接');
         }
-        $openid = WeChat::getOpenId();
-        if(empty($openid)){
-            $this->error('请在微信客户端打开链接');
-        }
-        $user_info = WeChat::getWeChatInfo($openid);
+//        $openid = WeChat::getOpenId();
+
+//        $user_info = WeChat::getWeChatInfo($openid);
+        $user_info = WeChat::getUserInfo();
+        $openid = $user_info['openid'];
+
         if(!empty($user_info)){
             $WechatUserModel = D('WechatUser');
             $id = $WechatUserModel->where(array('openid'=>$openid))->getField('id');

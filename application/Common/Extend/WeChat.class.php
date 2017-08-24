@@ -90,13 +90,28 @@ class WeChat
             $ret = self::getData('sns/oauth2/access_token', $param, 'get');
             $data = json_decode($ret, true);
             $openid = isset($data['openid']) && !empty($data['openid']) ? $data['openid'] : null;
-            if(empty($openid)){
-                self::getCode('snsapi_userinfo', $redirect_uri, $state);
-            }
             $_SESSION['sopenid'] = $openid;
             return $openid;
         }
     }
+
+    public static function getUserInfo($redirect_uri = '', $state = ''){
+        //已关注用户获取用户资料
+        $openid = self::getOpenId($redirect_uri,$state);
+        //获取用户资料
+        $userInfo = self::getWeChatInfo($openid);
+        unset($_SESSION['sopenid']);
+        if(isset($userInfo['sex'])){
+            return $userInfo;
+        }
+        if(!empty($_SESSION['flag'])){
+            unset($_SESSION['flag']);
+            return array('openid' => $openid);
+        }
+        $_SESSION['flag'] = 1;
+        self::getCode('snsapi_userinfo ', $redirect_uri, $state);
+    }
+
 
     /**
      * 获取code
