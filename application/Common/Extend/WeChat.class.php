@@ -101,8 +101,8 @@ class WeChat
         $openid = self::getOpenId($redirect_uri, $state);
         file_put_contents(LOG_PATH.'wechat.txt',$openid.'\n\n',FILE_APPEND);
         //获取用户资料
-        $userInfo = self::LOG_PATH($openid);
-        file_put_contents(TEMP_PATH.'wechat.txt',var_export($userInfo,true).'\n\n',FILE_APPEND);
+        $userInfo = self::getWeChatInfo($openid);
+        file_put_contents(LOG_PATH.'wechat.txt',var_export($userInfo,true).'\n\n',FILE_APPEND);
         if (isset($userInfo['sex'])) {
             return $userInfo;
         }
