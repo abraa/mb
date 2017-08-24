@@ -95,31 +95,6 @@ class WeChat
         }
     }
 
-    public static function getUserInfo($redirect_uri = '', $state = '')
-    {
-
-        $redirect_uri = self::getRedirectUri($redirect_uri);
-        $code = empty($_REQUEST['code']) ? null : trim($_REQUEST['code']);
-        if (empty($code)) {
-            self::getCode('snsapi_userinfo', $redirect_uri, $state);
-        } else {
-            $param = array(
-                'appid' => self::$app_id,
-                'secret' => self::$app_secret,
-                'code' => $code,
-                'grant_type' => 'authorization_code'
-            );
-            $ret = self::getData('sns/oauth2/access_token', $param, 'get');
-            $data = json_decode($ret, true);
-            $openid = isset($data['openid']) && !empty($data['openid']) ? $data['openid'] : null;
-            echo $openid."<br>";
-
-        }
-        $info = self::getWeChatInfo($openid);
-        echo "<pre>";
-        print_r($info);
-        exit;
-    }
 
     /**
      * 设置微信授权回调地址
