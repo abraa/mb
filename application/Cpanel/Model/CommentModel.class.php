@@ -78,10 +78,10 @@ class CommentModel extends CpanelModel {
             $CommentTagModel = D('CommentTag');
             $WechatUserModel = D('WechatUser');
             foreach($rows as $key=>$value){
-                $value['nickname'] = $value['openid'];
+                $value['nickname'] = '';
                 if(!empty($value['openid'])){
                     $value['nickname'] = $WechatUserModel->where(array('openid'=>$value['openid']))->getField('nickname');
-                    $value['nickname'] = $value['nickname'] ? $value['nickname'] : $value['openid'];
+                    $value['nickname'] = $value['nickname'] ? $value['nickname'] : '<span title="'.$value['openid'].'">未关注用户</span>';
                 }
                 $value['tag_names'] = array();
                 if(!empty($value['tag_ids'])){
