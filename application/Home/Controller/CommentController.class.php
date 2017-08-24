@@ -133,10 +133,10 @@ class CommentController extends Controller {
 //        $openid = WeChat::getOpenId();
 
 //        $user_info = WeChat::getWeChatInfo($openid);
-        file_put_contents(TEMP_PATH.'wechat.txt','=========start========\n\n');
+        file_put_contents(LOG_PATH.'wechat.txt','=========start========\n\n');
         $user_info = WeChat::getUserInfo();
-        file_put_contents(TEMP_PATH.'wechat.txt',var_dump($user_info,true)."\n",FILE_APPEND);
-        file_put_contents(TEMP_PATH.'wechat.txt','=========end========\n',FILE_APPEND);
+        file_put_contents(LOG_PATH.'wechat.txt',var_export($user_info,true)."\n",FILE_APPEND);
+        file_put_contents(LOG_PATH.'wechat.txt','=========end========\n',FILE_APPEND);
         $openid = $user_info['openid'];
 
         if(!empty($user_info)){
