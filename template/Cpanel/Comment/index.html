@@ -7,7 +7,7 @@
             <td align="right">
             	<input class="easyui-combobox" name="tag_id" id="tag_id" method="get" data-options="url:'{:U('CommentTag/select')}',valueField:'id',textField:'text'" value="0" style="width:150px;">
             	<select name="is_satisfy" id="is_satisfy" class="easyui-combobox" style="width: 80px;">
-                	<option value="-1">是否满意</option>
+                	<option value="-1">满意度</option>
                 	<option value="1">满意</option>
                     <option value="0">不满意</option>
                 </select>
@@ -25,7 +25,7 @@
         <th data-options="field:'nickname', sortable:true,width:20">评价人</th>
         <th data-options="field:'is_satisfy',width:20, sortable:true,align:'center', formatter: function(value){
         return value == '1' ? '<font color=green>满意</font>' : '<font color=red>不满意</font>';
-    }">是否满意</th>
+    }">满意度</th>
     	<th data-options="field:'tag_names', sortable:true,width:60">标签</th>
         <th data-options="field:'content', sortable:true,width:60">评价内容</th>
         <th data-options="field:'create_time', sortable:true,width:30">添加时间</th>

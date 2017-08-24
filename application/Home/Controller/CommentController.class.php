@@ -36,7 +36,7 @@ class CommentController extends Controller {
             if(empty($tag_list)){
                 $this->error('请选择一些适合的标签！');
             }
-            $employee_name = D('Employee')->where(array('employee_id'=>$employee_id))->getField('employee_name');
+            $employee_name = D('Employee')->where(array('employee_id'=>$employee_id,'display'=>1))->getField('employee_name');
             if(empty($employee_name)){
                 $this->error('当前工号不存在！');
             }
@@ -44,7 +44,7 @@ class CommentController extends Controller {
             foreach($tag_list as $tag){
                 $tag_ids[] = isset($tag->id) ? $tag->id : $tag['id'];
             }
-            $tagList = D('CommentTag')->field('id')->where(array('id'=>array('IN',implode($tag_ids,',')),'is_satisfy'=>$is_satisfy))->select();
+            $tagList = D('CommentTag')->field('id')->where(array('id'=>array('IN',implode($tag_ids,',')),'is_satisfy'=>$is_satisfy,'display'=>1))->select();
             if(empty($tagList)){
                 $this->error('选择的标签不存在！');
             }
@@ -89,7 +89,7 @@ class CommentController extends Controller {
         $employee_id = I('request.employee_id','','trim');
         $data = array();
         if(!empty($employee_id)){
-            $employee_name = D('Employee')->where(array('employee_id'=>$employee_id))->getField('employee_name');
+            $employee_name = D('Employee')->where(array('employee_id'=>$employee_id,'display'=>1))->getField('employee_name');
             if(!empty($employee_name)){
                 $data = array(
                     'employee_id'=>$employee_id,

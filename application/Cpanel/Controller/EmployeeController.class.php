@@ -17,7 +17,9 @@ use Common\Controller\CpanelController;
 
 class EmployeeController extends CpanelController {
     protected $tableName = 'Employee';
-
+    protected $allowAction = array(
+        'getPositionIdTree'
+    );
     /**
      *  获取职业 id树结构 position ID
      */
