@@ -95,23 +95,6 @@ class WeChat
         }
     }
 
-    public static function getUserInfo($redirect_uri = '', $state = '')
-    {
-        //已关注用户获取用户资料
-        $openid = self::getOpenId($redirect_uri, $state);
-        //获取用户资料
-        $userInfo = self::getWeChatInfo($openid);
-        if (isset($userInfo['sex'])) {
-            return $userInfo;
-        }
-        if (!empty($_SESSION['flag'])) {
-            unset($_SESSION['flag']);
-            return array('openid' => $openid);
-        }
-        $_SESSION['flag'] = 1;
-        unset($_SESSION['sopenid']);
-        self::getCode('snsapi_userinfo',  self::getRedirectUri($redirect_uri), $state);
-    }
 
     /**
      * 设置微信授权回调地址

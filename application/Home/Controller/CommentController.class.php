@@ -14,28 +14,6 @@ use Think\Controller;
 use Common\Extend\WeChat;
 
 class CommentController extends Controller {
-    public function test1(){
-        $page = I('request.page',1,'intval');
-        $pageSize = I('request.pageSize',10,'intval');
-        $field = I('request.field','*','trim');
-        $openid = I('request.openid','','trim');
-
-        $count = I('request.count',null,'intval');
-
-        $CommentOrder = D('WechatUser');
-        $where = array();
-        if(!empty($openid)){
-            $where['openid'] = $openid;
-        }
-        if(is_null($count)){
-            $list = $CommentOrder->field($field)->where($where)->page($page, $pageSize)->order('id desc')->select();
-        }else{
-            $list = $CommentOrder->field($field)->where($where)->page($page, $pageSize)->order('id desc')->count();
-        }
-        echo '<pre>';
-        print_r($list);
-        die;
-    }
     /**
      * 微信理发师评论
      */
@@ -58,7 +36,7 @@ class CommentController extends Controller {
             if(empty($tag_list)){
                 $this->error('请选择一些适合的标签！');
             }
-            $employee_name = D('Employee')->where(array('employee_id'=>$employee_id,'display'=>1))->getField('employee_name');
+            $employee_name = D('Employee')->where(array('employee_id'=>$employee_id))->getField('employee_name');
             if(empty($employee_name)){
                 $this->error('当前工号不存在！');
             }
@@ -66,7 +44,7 @@ class CommentController extends Controller {
             foreach($tag_list as $tag){
                 $tag_ids[] = isset($tag->id) ? $tag->id : $tag['id'];
             }
-            $tagList = D('CommentTag')->field('id')->where(array('id'=>array('IN',implode($tag_ids,',')),'is_satisfy'=>$is_satisfy,'display'=>1))->select();
+            $tagList = D('CommentTag')->field('id')->where(array('id'=>array('IN',implode($tag_ids,',')),'is_satisfy'=>$is_satisfy))->select();
             if(empty($tagList)){
                 $this->error('选择的标签不存在！');
             }
@@ -111,7 +89,7 @@ class CommentController extends Controller {
         $employee_id = I('request.employee_id','','trim');
         $data = array();
         if(!empty($employee_id)){
-            $employee_name = D('Employee')->where(array('employee_id'=>$employee_id,'display'=>1))->getField('employee_name');
+            $employee_name = D('Employee')->where(array('employee_id'=>$employee_id))->getField('employee_name');
             if(!empty($employee_name)){
                 $data = array(
                     'employee_id'=>$employee_id,
@@ -130,11 +108,11 @@ class CommentController extends Controller {
         if(isCheckWechat() === false){
             $this->error('请在微信客户端打开链接');
         }
-//        $openid = WeChat::getOpenId();
-
-//        $user_info = WeChat::getWeChatInfo($openid);
-        $user_info = WeChat::getUserInfo();
-        $openid = $user_info['openid'];
+        $openid = WeChat::getOpenId();
+        if(empty($openid)){
+            $this->error('请在微信客户端打开链接');
+        }
+        $user_info = WeChat::getWeChatInfo($openid);
 
         if(!empty($user_info)){
             $WechatUserModel = D('WechatUser');
