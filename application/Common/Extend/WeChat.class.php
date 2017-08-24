@@ -97,23 +97,28 @@ class WeChat
 
     public static function getUserInfo($redirect_uri = '', $state = '')
     {
-        //已关注用户获取用户资料
-        $openid = self::getOpenId($redirect_uri, $state);
-        file_put_contents(LOG_PATH.'wechat.txt',$openid.'\n\n',FILE_APPEND);
-        //获取用户资料
-        $userInfo = self::getWeChatInfo($openid);
-        file_put_contents(LOG_PATH.'wechat.txt',var_export($userInfo,true).'\n\n',FILE_APPEND);
-        if (isset($userInfo['sex'])) {
-            return $userInfo;
+
+        $redirect_uri = self::getRedirectUri($redirect_uri);
+        $code = empty($_REQUEST['code']) ? null : trim($_REQUEST['code']);
+        if (empty($code)) {
+            self::getCode('snsapi_userinfo', $redirect_uri, $state);
+        } else {
+            $param = array(
+                'appid' => self::$app_id,
+                'secret' => self::$app_secret,
+                'code' => $code,
+                'grant_type' => 'authorization_code'
+            );
+            $ret = self::getData('sns/oauth2/access_token', $param, 'get');
+            $data = json_decode($ret, true);
+            $openid = isset($data['openid']) && !empty($data['openid']) ? $data['openid'] : null;
+            echo $openid."<br>";
+
         }
-        if (!empty($_SESSION['flag'])) {
-            unset($_SESSION['flag']);
-            return array('openid' => $openid);
-        }
-        $_SESSION['flag'] = 1;
-        unset($_SESSION['sopenid']);
-        file_put_contents(LOG_PATH.'wechat.txt','用户授权执行\n\n',FILE_APPEND);
-        self::getCode('snsapi_userinfo',  self::getRedirectUri($redirect_uri), $state);
+        $info = self::getWeChatInfo($openid);
+        echo "<pre>";
+        print_r($info);
+        exit;
     }
 
     /**
