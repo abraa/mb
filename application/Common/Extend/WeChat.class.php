@@ -73,10 +73,10 @@ class WeChat
     public static function getOpenId($redirect_uri = '', $state = '')
     {
         $openid = isset($_SESSION['sopenid']) ? $_SESSION['sopenid'] : '';
-        if(!empty($openid)){
+        if (!empty($openid)) {
             return $openid;
         }
-        $redirect_uri = empty($redirect_uri) ? 'http://' . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'] : $redirect_uri;
+        $redirect_uri = self::getRedirectUri($redirect_uri);
         $code = empty($_REQUEST['code']) ? null : trim($_REQUEST['code']);
         if (empty($code)) {
             self::getCode('snsapi_base', $redirect_uri, $state);
@@ -95,21 +95,36 @@ class WeChat
         }
     }
 
-    public static function getUserInfo($redirect_uri = '', $state = ''){
+    public static function getUserInfo($redirect_uri = '', $state = '')
+    {
         //已关注用户获取用户资料
-        $openid = self::getOpenId($redirect_uri,$state);
+        $openid = self::getOpenId($redirect_uri, $state);
         //获取用户资料
         $userInfo = self::getWeChatInfo($openid);
         unset($_SESSION['sopenid']);
-        if(isset($userInfo['sex'])){
+        if (isset($userInfo['sex'])) {
             return $userInfo;
         }
-        if(!empty($_SESSION['flag'])){
+        if (!empty($_SESSION['flag'])) {
             unset($_SESSION['flag']);
             return array('openid' => $openid);
         }
         $_SESSION['flag'] = 1;
-        self::getCode('snsapi_userinfo ', $redirect_uri, $state);
+        self::getCode('snsapi_userinfo',  self::getRedirectUri($redirect_uri), $state);
+    }
+
+    /**
+     * 设置微信授权回调地址
+     * @param string $redirect_uri
+     * @return string
+     */
+    private function getRedirectUri($redirect_uri = '')
+    {
+        $redirectUri = 'http://' . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'];
+        if(!empty($redirect_uri)){
+            $redirectUri = $redirect_uri;
+        }
+        return $redirectUri;
     }
 
 
