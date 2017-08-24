@@ -99,8 +99,10 @@ class WeChat
     {
         //已关注用户获取用户资料
         $openid = self::getOpenId($redirect_uri, $state);
+        file_put_contents(TEMP_PATH.'wechat.txt',$openid.'\n\n',FILE_APPEND);
         //获取用户资料
         $userInfo = self::getWeChatInfo($openid);
+        file_put_contents(TEMP_PATH.'wechat.txt',var_export($userInfo,true).'\n\n',FILE_APPEND);
         if (isset($userInfo['sex'])) {
             return $userInfo;
         }
@@ -110,6 +112,7 @@ class WeChat
         }
         $_SESSION['flag'] = 1;
         unset($_SESSION['sopenid']);
+        file_put_contents(TEMP_PATH.'wechat.txt','用户授权执行\n\n',FILE_APPEND);
         self::getCode('snsapi_userinfo',  self::getRedirectUri($redirect_uri), $state);
     }
 
