@@ -11,7 +11,7 @@
                     <option value="0">不显示</option>
                 </select>
                 <select name="is_satisfy" id="is_satisfy" class="easyui-combobox" style="width: 80px;">
-                	<option value="-1">是否满意</option>
+                	<option value="-1">满意度</option>
                 	<option value="1">满意</option>
                     <option value="0">不满意</option>
                 </select>
@@ -31,7 +31,7 @@
         <th data-options="field:'tag_name', sortable:true,width:120">标签名称</th>
         <th data-options="field:'is_satisfy',width:50, sortable:true,align:'center', formatter: function(value){
         return value == '1' ? '<font color=green>满意</font>' : '<font color=red>不满意</font>';
-    }">是否满意</th>
+    }">满意度</th>
         <th data-options="field:'display',width:50, sortable:true,align:'center', formatter: function(value){
         return value == '1' ? '<font color=green>显示</font>' : '<font color=red>不显示</font>';
     }">是否显示</th>

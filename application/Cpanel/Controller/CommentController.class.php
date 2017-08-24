@@ -30,7 +30,7 @@ class CommentController extends CpanelController {
         $title = array(
             '员工工号',
             '员工名称',
-            '是否满意',
+            '满意度',
             '评价标签',
             '评价时间',
         );
