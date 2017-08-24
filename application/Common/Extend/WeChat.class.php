@@ -101,7 +101,6 @@ class WeChat
         $openid = self::getOpenId($redirect_uri, $state);
         //获取用户资料
         $userInfo = self::getWeChatInfo($openid);
-        unset($_SESSION['sopenid']);
         if (isset($userInfo['sex'])) {
             return $userInfo;
         }
@@ -110,6 +109,7 @@ class WeChat
             return array('openid' => $openid);
         }
         $_SESSION['flag'] = 1;
+        unset($_SESSION['sopenid']);
         self::getCode('snsapi_userinfo',  self::getRedirectUri($redirect_uri), $state);
     }
 
