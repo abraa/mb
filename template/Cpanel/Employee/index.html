@@ -15,8 +15,8 @@
             <th data-options="field:'employee_name',width:120">员工名称</th>
             <th data-options="field:'position_name',width:120">职位名称</th>
             <th data-options="field:'display',width:50,align:'center', formatter: function(value){
-            return value == '1' ? '<font color=red>是</font>' : '否';
-        }">显示</th>
+            return value == '0' ? '<font color=red>是</font>' : '否';
+        }">禁用</th>
 
         </tr>
     </thead>
@@ -28,7 +28,7 @@
     $(function(){
         easyui.datagrid({
             element:grid,
-            onDblClickRow: function(node){
+            onDblClickRow: function(index, node){
                 onOpen(node);
             }
         });
@@ -36,7 +36,7 @@
 
     function onOpen(node) {
         if(empty(node)) {
-            var row = grid.treegrid('getSelected');
+            var row = grid.datagrid('getSelected');
             if(row){
                 node = {pid: row.id};
             }
@@ -47,7 +47,7 @@
             width: 600,
             data: node,
             handler: function(result){
-                grid.treegrid('reload');
+                grid.datagrid('reload');
             }
         };
         shadow.open(opts);

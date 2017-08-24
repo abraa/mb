@@ -38,7 +38,7 @@
     $(function(){
         easyui.datagrid({
             element:grid,
-            onDblClickRow: function(row){
+            onDblClickRow: function(index, row){
                 onOpen(row);
             }
         });
@@ -57,7 +57,7 @@
             width: '70%',
             data: row,
             handler: function(result){
-                //grid.treegrid('reload');
+                //grid.datagrid('reload');
             }
         };
         shadow.open(opts);
@@ -68,13 +68,13 @@
             href: '{:U("export")}',
             width: '70%',
             handler: function(result){
-                //grid.treegrid('reload');
+                //grid.datagrid('reload');
             }
         };
         shadow.open(opts);
     }
 	function onSearch() {
-        grid.treegrid('reload', {
+        grid.datagrid('reload', {
 			tag_id: $('#tag_id').combobox('getValue'),
 			is_satisfy: $('#is_satisfy').combobox('getValue'),
 			employee_id: $('#employee_id').val(),
