@@ -14,7 +14,9 @@ use Common\Controller\CpanelController;
 
 class CommentTagController extends CpanelController {
     protected $tableName = 'CommentTag';
-
+    protected $allowAction = array(
+        'select'
+    );
     /**
      * 下拉菜单
      */
