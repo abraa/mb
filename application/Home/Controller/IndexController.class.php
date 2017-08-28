@@ -4,7 +4,7 @@ use Common\Extend\WeChat;
 use Think\Controller;
 class IndexController extends Controller {
     public function index(){
-       echo '瓷肌医疗门诊部-美容顾客系统';
+       echo '<h1 style="text-align: center;padding-top: 13%">瓷肌医疗门诊部-美容顾客系统</h1>';
        exit;
     }
 
