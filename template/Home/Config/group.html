@@ -1,0 +1,73 @@
+<div class="datagrid-toolbar form">
+    <table width="100%">
+        <tr>
+            <td>
+                <a class="easyui-linkbutton" plain="true"><i class="fa fa-th-list"></i> 网站设置</a>
+            </td>
+        </tr>
+    </table>
+</div>
+<form data-url="{:U('group_save')}" method="post" class="form container">
+    <div class="easyui-tabs" data-options="plain:true, tabHeight:'35'">
+        <volist name="Think.config.CONFIG_GROUP_LIST" id="group">
+            <notempty name="list[$key]">
+                <div title="{$group}配置" style="padding:10px;">
+                    <table>
+                        <volist name="list[$key]" id="config">
+                            <tr>
+                                <th>{$config.title}：</th>
+                                <td>
+                                    <switch name="config.type">
+                                        <case value="1">
+                                            <input type="text" class="easyui-textbox" name="config[{$config.name}]" value="{$config.value}" style="width:300px;height:30px">
+                                        </case>
+                                        <case value="2">
+                                            <input type="text" class="easyui-textbox" name="config[{$config.name}]" value="{$config.value}" style="width:300px;height:30px">
+                                        </case>
+                                        <case value="3">
+                                            <input type="text" class="easyui-textbox" name="config[{$config.name}]" value="{$config.value}" data-options="multiline:true" style="width:300px;height:100px">
+                                        </case>
+                                        <case value="4">
+                                            <select name="config[{$config.name}]" class="easyui-combobox" style="min-width: 100px;">
+                                                <volist name=":parseConfigAttr($config[extra])" id="vo">
+                                                    <option value="{$key}" <eq name="config.value" value="$key">selected</eq>>{$vo}</option>
+                                                </volist>
+                                            </select>
+                                        </case>
+                                        <case value="5">
+                                            <volist name=":parseConfigAttr($config[extra])" id="vo">
+                                                <input type="radio" name="config[{$config.name}]" value="{$key}" <eq name="config.value" value="$key">checked</eq>>{$vo} &nbsp;&nbsp;
+                                            </volist>
+                                        </case>
+                                    </switch>
+                                    <span class="tips"><if condition="$config[remark]">（{$config.remark}）</if></span>
+                                </td>
+                            </tr>
+                        </volist>
+                    </table>
+                </div>
+            </notempty>
+        </volist>
+    </div>
+    <br>
+    <div class="container">
+        <a class="easyui-linkbutton button-small" onclick="onSubmit()"> 保存</a>
+    </div>
+</form>
+<script type="text/javascript">
+    var onSubmit = function(){
+        easyui.submit($('form'), function(result){
+            try{
+                easyui.alert(result.info);
+                return false;
+            }catch (e){}
+        })
+    };
+    function onReset() {
+        easyui.reset('form');
+    }
+    function onChange(checked) {
+        var val = checked ? 'on' : 'offs';
+        $(this).switchbutton('setValue', val);
+    }
+</script>

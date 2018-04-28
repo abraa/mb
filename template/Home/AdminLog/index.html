@@ -1,0 +1,68 @@
+<form id="toolbar" class="form">
+    <table width="100%">
+        <tr>
+            <td align="right">
+                模块：<select id="menu_module" class="easyui-combobox" name="menu_module" style="width:100px;">
+                <option value="cpanel">cpanel</option>
+            </select>
+                控制器：<input id="menu_controller" name="menu_controller" value="" style="width:180px;">
+                操作：<input id="menu_method" name="menu_method" value="" style="width:180px;">
+                <input name="keyword" class="easyui-textbox" data-options="buttonText:'查询',prompt:'请输入关键词',buttonIcon:'icon-search', onClickButton: onSearch" style="width:250px;">
+            </td>
+        </tr>
+    </table>
+</form>
+
+<table id="grid">
+    <thead>
+    <tr>
+        <!--<th data-options="field:'ck',checkbox:true"></th>-->
+        <th data-options="field:'id', sortable:true">编号ID</th>
+        <th data-options="field:'user_name',width:60">登录账号</th>
+        <th data-options="field:'real_name',width:60">真实姓名</th>
+        <th data-options="field:'module_name',width:60">模块</th>
+        <th data-options="field:'controller_name',width:60">控制器</th>
+        <th data-options="field:'action_name',width:60">方法</th>
+        <th data-options="field:'create_time',width:120, sortable:true">操作时间</th>
+        <th data-options="field:'note',width:200">日记</th>
+        <th data-options="field:'params'">参数</th>
+    </tr>
+    </thead>
+</table>
+<script type="text/javascript">
+    var grid = $('#grid');
+    $(function() {
+        easyui.datagrid({
+            element: grid,
+            hideButtons: true,
+            onDblClickRow: function(index, node){
+//                onOpen(node);
+            }
+        });
+        var module = $('#menu_module').combobox('getValue');
+        $('#menu_controller').combobox({
+            url: "{:U('AdminLog/getMenu')}?menu_module="+module,
+            valueField: 'text',
+            textField: 'text',
+            onSelect: function(record){
+                $('#menu_method').combobox({
+                    url: "{:U('AdminLog/getMenu')}?menu_module="+module+"&menu_controller="+record.text,
+                    valueField: 'text',
+                    textField: 'text',
+                    disabled:false
+                });
+            }
+        });
+        $('#menu_method').combobox({
+            disabled: true
+        });
+    });
+
+    var onSearch = function(){
+        var query = $('#toolbar').form('getData');
+        console.log(query);
+        grid.datagrid({
+            queryParams: query
+        });
+    };
+</script>

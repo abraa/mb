@@ -1,0 +1,88 @@
+<div class="easyui-layout" data-options="fit:true">
+    <div data-options="region:'north', border: false" style="height: auto" >
+        <div class="datagrid-toolbar form">
+            <a class="easyui-linkbutton" iconCls="icon-add" plain="true" onclick="onAdd(false)">添加同级地区</a>
+            <a class="easyui-linkbutton" iconCls="icon-add" plain="true" onclick="onAdd(true)">添加下级地区</a>
+        </div>
+    </div>
+    <div data-options="region:'center', border: false">
+        <ul id="grid"></ul>
+    </div>
+</div>
+<div id="mm" class="easyui-menu" data-options="onClick:onMenu">
+    <div data-options="name:'modify',iconCls:'icon-edit'">编辑</div>
+    <div data-options="name:'add',iconCls:'icon-add'">新增下级地区</div>
+</div>
+<script type="text/javascript">
+    var grid = $('#grid');
+    var current_node;
+    $(function(){
+        grid.tree({
+            url: location.href,
+            dnd: true,
+            lines: true,
+            animate: true,
+            onContextMenu: function(e, node){
+                e.preventDefault();
+                // 查找节点
+                console.log(node);
+                $(this).tree('select', node.target);
+                // 显示快捷菜单
+                $('#mm').menu('show', {
+                    left: e.pageX,
+                    top: e.pageY
+                });
+            },
+            onClick: function(node) {
+                if(current_node && node.id != current_node.id) {
+                    $(this).tree('endEdit', current_node.target);
+                }
+            },
+            onAfterEdit: function(node) {
+                easyui.doAjax('{:U("save")}', {id: node.id, text: node.text, pid: node.pid}, function(result){
+                    grid.tree('cancelEdit', node.target);
+                });
+                current_node = {};
+            }
+        });
+    });
+
+    function onMenu(item) {
+        switch (item.name) {
+            case 'add':onAdd(true);break;
+            case 'modify':onModify();break;
+        }
+
+    }
+
+    function onModify() {
+        var node = grid.tree('getSelected');
+        grid.tree('beginEdit',node.target);
+        current_node = node;
+    }
+
+    function onAdd(flag) {
+        var node = grid.tree('getSelected');
+        if (node){
+            if(flag) {
+                grid.tree('append', {
+                    parent: node.target,
+                    data: {
+                        id: 0,
+                        pid: node.id,
+                        text: '请输入名称'
+                    }
+                });
+            }else {
+                grid.tree('insert', {
+                    after: node.target,
+                    data: {
+                        id: 0,
+                        pid: node.pid,
+                        text: '请输入名称'
+                    }
+                });
+            }
+        }
+    }
+</script>

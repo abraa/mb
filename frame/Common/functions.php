@@ -584,6 +584,7 @@ function D($name='',$layer='') {
     if(isset($_model[$name.$layer]))
         return $_model[$name.$layer];
     $class          =   parse_res_name($name,$layer);
+
     if(class_exists($class)) {
         $model      =   new $class(basename($name));
     }elseif(false === strpos($name,'/')){
@@ -591,6 +592,7 @@ function D($name='',$layer='') {
         if(!C('APP_USE_NAMESPACE')){
             import('Common/'.$layer.'/'.$class);
         }else{
+
             $class      =   '\\Common\\'.$layer.'\\'.$name.$layer;
         }
         $model      =   class_exists($class)? new $class($name) : new Think\Model($name);
@@ -839,7 +841,6 @@ function dump($var, $echo=true, $label=null, $strict=true) {
         }
     } else {
         ob_start();
-        var_dump($var);
         $output = ob_get_clean();
         if (!extension_loaded('xdebug')) {
             $output = preg_replace('/\]\=\>\n(\s+)/m', '] => ', $output);

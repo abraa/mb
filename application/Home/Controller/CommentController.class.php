@@ -1,135 +1,51 @@
 <?php
 /**
  * ====================================
- * 评论入口
+ * 评论管理
  * ====================================
  * Author: 9009123
- * Date: 2017-08-21
+ * Date: 2017/08/21 15:37
  * ====================================
  * File: CommentController.class.php
  * ====================================
  */
-namespace Home\Controller;
-use Think\Controller;
-use Common\Extend\WeChat;
+namespace Cpanel\Controller;
+use Common\Controller\CpanelController;
 
-class CommentController extends Controller {
+class CommentController extends CpanelController {
+    protected $tableName = 'Comment';
+
     /**
-     * 微信理发师评论
+     * 导出报表
      */
-    public function HaircutWechat(){
-        $openid = $this->getOpenid();
-        if(IS_POST && IS_AJAX){
-            $employee_id = I('post.employee_id','','trim');
-            $is_satisfy = I('post.is_satisfy',0,'intval');
-            $tag_list = I('post.tag_list','','trim');
-            $content = I('post.content','','trim');
-
-            $count = D('Comment')->where(array('openid'=>$openid,'create_time'=>array('EGT',(time() - 15*60))))->count();
-            if($count >= 3){
-                $this->error('您好，请不要频繁提交，15分钟内只能提交3次！');
-            }
-            if(empty($employee_id)){
-                $this->error('请确认工号！');
-            }
-            $tag_list = !empty($tag_list) ? json_decode($tag_list) : array();
-            if(empty($tag_list)){
-                $this->error('请选择一些适合的标签！');
-            }
-            $employee_name = D('Employee')->where(array('employee_id'=>$employee_id))->getField('employee_name');
-            if(empty($employee_name)){
-                $this->error('当前工号不存在！');
-            }
-            $tag_ids = array();
-            foreach($tag_list as $tag){
-                $tag_ids[] = isset($tag->id) ? $tag->id : $tag['id'];
-            }
-            $tagList = D('CommentTag')->field('id')->where(array('id'=>array('IN',implode($tag_ids,',')),'is_satisfy'=>$is_satisfy))->select();
-            if(empty($tagList)){
-                $this->error('选择的标签不存在！');
-            }
-            $tag_ids = array();
-            foreach($tagList as $tag){
-                $tag_ids[] = $tag['id'];
-            }
-            $data = array(
-                'openid'=>$openid,
-                'employee_id'=>$employee_id,
-                'employee_name'=>$employee_name,
-                'content'=>(empty($content) ? '' : $content),
-                'tag_ids'=>implode(',',$tag_ids),
-                'is_satisfy'=>$is_satisfy,
-                'create_time'=>time()
-            );
-            $result = D('Comment')->add($data);
-            if($result === false){
-                $result = D('Comment')->add($data);  //重试
-            }
-            if($result === false){
-                $this->error('评价失败，请重试！');
-            }
-            $this->success();
+    public function doExport(){
+        $params = I('post.');
+        if(!isset($params['create_time_start']) || empty($params['create_time_start'])){
+            $params['create_time_start'] = date('Y-m-d 00:00:00');
         }
-        $this->display();
-    }
-
-    /**
-     * 获取评论标签
-     */
-    public function getTag(){
-        $satisfy = I('request.satisfy',0,'intval');
-        $list = D('CommentTag')->field('id,tag_name')->where(array('is_satisfy'=>$satisfy,'display'=>1))->order('sort')->select();
-        $this->success(!empty($list) ? $list : array());
-    }
-
-    /**
-     * 理发师查询
-     */
-    public function HaircutInfo(){
-        $employee_id = I('request.employee_id','','trim');
+        if(!isset($params['create_time_end']) || empty($params['create_time_end'])){
+            $params['create_time_end'] = date('Y-m-d 23:59:59');
+        }
+        $list = $this->dbModel->filter($params)->grid($params, true);
+        $title = array(
+            '员工工号',
+            '员工名称',
+            '满意度',
+            '评价标签',
+            '评价时间',
+        );
         $data = array();
-        if(!empty($employee_id)){
-            $employee_name = D('Employee')->where(array('employee_id'=>$employee_id))->getField('employee_name');
-            if(!empty($employee_name)){
-                $data = array(
-                    'employee_id'=>$employee_id,
-                    'employee_name'=>$employee_name
+        if(!empty($list['rows'])){
+            foreach($list['rows'] as $value){
+                $data[] = array(
+                    $value['employee_id'],
+                    $value['employee_name'],
+                    ($value['is_satisfy']==1 ? '满意' : '不满意'),
+                    $value['tag_names'],
+                    $value['create_time'],
                 );
             }
         }
-        $this->success($data);
-    }
-
-    /**
-     * 获取openid
-     * @return null
-     */
-    private function getOpenid(){
-        if(isCheckWechat() === false){
-            $this->error('请在微信客户端打开链接');
-        }
-        $openid = WeChat::getOpenId();
-        if(empty($openid)){
-            $this->error('请在微信客户端打开链接');
-        }
-        $user_info = WeChat::getWeChatInfo($openid);
-
-        if(!empty($user_info)){
-            $WechatUserModel = D('WechatUser');
-            $id = $WechatUserModel->where(array('openid'=>$openid))->getField('id');
-            if($id > 0){
-                $WechatUserModel->where(array('id'=>$id))->save($user_info);
-            }else{
-                $WechatUserModel->add($user_info);
-            }
-        }
-        return $openid;
-    }
-
-    /**
-     * 默认方法暂时不开启
-     */
-    public function index(){
-        send_http_status(404);
+        export_data(array('title'=>$title, 'data'=>$data));
     }
 }

@@ -1,0 +1,37 @@
+<form data-url="{:U('save')}" method="post" class="form">
+    <table>
+        <tr>
+            <th>标签名称：</th>
+            <td><input name="tag_name" id="tag_name" class="easyui-textbox" data-options="required:true"></td>
+        </tr>
+        <tr>
+            <th>满意度：</th>
+            <td>
+                <label><input type="radio" name="is_satisfy" value="1">满意</label>&nbsp;&nbsp;
+                <label><input type="radio" name="is_satisfy" value="0">不满意</label>
+            </td>
+        </tr>
+        <tr>
+            <th>是否显示：</th>
+            <td>
+                <label><input type="radio" name="display" value="1">显示</label>&nbsp;&nbsp;
+                <label><input type="radio" name="display" value="0">不显示</label>
+            </td>
+        </tr>
+        <tr>
+            <th>排序顺序：</th>
+            <td><input name="sort" class="easyui-textbox" value="50" data-options="required:true"></td>
+        </tr>
+    </table>
+    <input type="hidden" name="id" value="" />
+</form>
+<script type="text/javascript">
+function setData(data) {
+	if(!empty(data.tag_name)) {
+		$('#tag_name').textbox({
+			readonly: true,
+			disabled: true
+		});
+	}
+}
+</script>

@@ -1,0 +1,77 @@
+<div id="toolbar">
+    <table class="form" width="100%">
+        <tr>
+            <td>
+                <a class="easyui-linkbutton" iconCls="icon-add" plain="true" onclick="onOpen({})">添加</a>
+            </td>
+            <td align="right">
+            	<select name="display" id="display" class="easyui-combobox" style="width: 80px;">
+                	<option value="-1">显示状态</option>
+                	<option value="1">显示</option>
+                    <option value="0">不显示</option>
+                </select>
+                <select name="is_satisfy" id="is_satisfy" class="easyui-combobox" style="width: 80px;">
+                	<option value="-1">满意度</option>
+                	<option value="1">满意</option>
+                    <option value="0">不满意</option>
+                </select>
+                <select name="is_client" id="is_client" class="easyui-combobox" style="width: 80px;">
+                	<option value="-1">标签来源</option>
+                	<option value="1">用户提交</option>
+                    <option value="0">后台添加</option>
+                </select>
+                <input id="tag_name" class="easyui-textbox" data-options="buttonText:'搜索',prompt:'请输入标签名...',buttonIcon:'icon-search',onClickButton:onSearch" style="width:180px;">
+            </td>
+        </tr>
+    </table>
+</div>
+<table id="grid" width="100%">
+    <thead>
+    <tr>
+        <th data-options="field:'tag_name', sortable:true,width:120">标签名称</th>
+        <th data-options="field:'is_satisfy',width:50, sortable:true,align:'center', formatter: function(value){
+        return value == '1' ? '<font color=green>满意</font>' : '<font color=red>不满意</font>';
+    }">满意度</th>
+        <th data-options="field:'display',width:50, sortable:true,align:'center', formatter: function(value){
+        return value == '1' ? '<font color=green>显示</font>' : '<font color=red>不显示</font>';
+    }">是否显示</th>
+    	<th data-options="field:'is_client',width:50, sortable:true,align:'center', formatter: function(value){
+        return value == '1' ? '<font color=blue>用户提交</font>' : '<font color=#000>后台添加</font>';
+    }">标签来源</th>
+    	<th data-options="field:'sort', sortable:true,width:30">排序</th>
+        <th data-options="field:'create_time', sortable:true,width:90">添加时间</th>
+    </tr>
+    </thead>
+</table>
+<script type="text/javascript">
+    var grid = $('#grid');
+    var rowId = 0;
+    $(function(){
+        easyui.datagrid({
+            element:grid,
+            onDblClickRow: function(index, row){
+                onOpen(row);
+            }
+        });
+    });
+
+    function onOpen(row) {
+        var opts = {
+            href: '{:U("form")}',
+            width: 500,
+            data: row,
+            handler: function(result){
+                grid.datagrid('reload');
+            }
+        };
+        shadow.open(opts);
+    }
+	function onSearch() {
+        grid.datagrid('reload', {
+			is_satisfy: $('#is_satisfy').combobox('getValue'),
+            display: $('#display').combobox('getValue'),
+			is_client: $('#is_client').combobox('getValue'),
+			tag_name: $('#tag_name').val()
+        });
+    }
+</script>

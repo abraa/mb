@@ -1,0 +1,62 @@
+<form id="toolbar" class="form">
+<div>
+    <table width="100%">
+        <tr align="right">
+            <td align="right">
+                <input name="rank" class="easyui-combobox" data-options="valueField: 'id',textField: 'text', url:'{:U('grade/combo')}'">
+				<select name="state" class="easyui-combobox">
+                    <option value="0">{:L('select_node')}</option>
+                    <option value="1">正常</option>
+                    <option value="-1">删除（订单退货）</option>
+                    <option value="-2">积分过期</option>
+                    <option value="-3">消费</option>
+                    <option value="-4">等级规则变动（更新等级）</option>
+                </select>
+				<input name="start_time" class="easyui-datetimebox" size="10" data-options="prompt:'开始时间'">
+                <input name="end_time" class="easyui-datetimebox" size="10" data-options="prompt:'结束时间'">
+                <select name="type" class="easyui-combobox">
+                    <option value="0">{:L('select_node')}</option>
+                    <option value="1">用户id</option>
+                    <!--<option value="2">邮箱</option>-->
+                    <option value="3">手机号码</option>
+                    <!--<option value="4">会员号</option>-->
+                    <option value="6">会员呢称</option>
+                </select>
+				<input name="keyword" class="easyui-textbox" data-options="buttonText:' 搜索 ',prompt:'请输入关键词...',buttonIcon:'icon-search',onClickButton: onSearch" style="width:250px;">
+            </td>
+        </tr>
+    </table>
+</div>
+</form>
+<table id="grid">
+    <thead>
+    <tr>
+        <th data-options="field:'id',width:20,sortable:true" align="center">编号</th>
+        <th data-options="field:'state',width:30,sortable:true" align="center">状态</th>
+        <th data-options="field:'user_id',width:30" align="center">客户ID</th>
+        <th data-options="field:'user_name',width:30" align="center">会员昵称</th>
+        <th data-options="field:'mobile',width:30" align="center">手机号码</th>
+        <th data-options="field:'old_rank',width:30" align="center">旧等级</th>
+        <th data-options="field:'new_rank',width:30" align="center">新等级</th>
+        <th data-options="field:'add_time',width:50,sortable:true" align="center">创建时间</th>
+        <th data-options="field:'rank',width:20" align="center">等级</th>
+    </tr>
+    </thead>
+</table>
+<script type="text/javascript">
+    var grid = $('#grid');
+    $(function() {
+        easyui.datagrid({
+            rownumbers:false,
+            element: grid
+        });
+    });
+	function onSearch() {
+        var query = $('#toolbar').form('getData');
+        grid.datagrid({
+            queryParams:query
+        });
+    }
+
+	
+</script>

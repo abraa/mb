@@ -1,0 +1,59 @@
+<div id="toolbar" class="form">
+    <table>
+        <tr>
+            <td width="100%">
+                <a class="easyui-linkbutton" iconCls="icon-add" plain="true" onclick="onOpen()">添加</a>
+                <a class="datagrid-btn-separator"></a>
+                <a class="easyui-linkbutton" iconCls="icon-print" plain="true" onclick="onLog()">查看日志</a>
+            </td>
+        </tr>
+    </table>
+</div>
+<table id="grid">
+    <thead>
+    <tr>
+        <th data-options="field:'rank_id',width:120, sortable:true">序列号</th>
+        <th data-options="field:'site_id',width:120">站点id</th>
+        <th data-options="field:'rank_name',width:120">等级名称</th>
+        <th data-options="field:'min_points',width:120">积分下限</th>
+        <th data-options="field:'max_points',width:120, sortable:true">积分上限</th>
+        <th data-options="field:'discount',width:120, sortable:true">享受折扣率</th>
+    </tr>
+    </thead>
+</table>
+<script type="text/javascript">
+    var grid = $('#grid');
+    $(function() {
+        easyui.datagrid({
+            element: grid,
+            onDblClickRow: function(index, node){
+                onOpen(node);
+            }
+        });
+    });
+
+    function onOpen(node){
+        var opts = {
+            href: '{:U("form")}',
+            width: 600,
+            data: node,
+            modal:false,
+            handler: function(result){
+                grid.datagrid('reload');
+            }
+        };
+        shadow.open(opts);
+    }
+	function onLog(){
+		var opts = {
+			href: '{:U("log")}',
+			width: 1000,
+            height: 700,
+			title: '会员等级日志',
+            buttons:false
+		};
+		easyui.dialog(opts);
+
+	}
+	
+</script>

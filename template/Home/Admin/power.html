@@ -1,0 +1,26 @@
+<form id="master" data-url="{:U('save')}" method="post">
+    <div class="datagrid-toolbar form">
+        <table width="100%">
+            <tr>
+                <td>
+                    <a class="easyui-linkbutton" plain="true"><i class="fa fa-cogs"></i> 权限列表</a>
+                </td>
+            </tr>
+        </table>
+    </div>
+    <ul id="grid"></ul>
+    <input type="hidden" name="menu_id" id="admin_menu_id" value="" />
+    <input type="hidden" name="user_id" value="{$user_id}">
+</form>
+<script type="text/javascript">
+var menu = eval('({$menu})');
+skin_tree({
+	id:'#grid',
+	input_name:'menu_id',
+	default_id:'{$user_menu_id}',
+	disabled_id:'{$role_menu_id}',
+	list_json:menu,
+	is_disabled_checked:true,
+	default_disabled_input:true,
+});
+</script>

@@ -23,6 +23,15 @@ return array(
 
     'VIEW_PATH'                 => './../template/Home/',
 
+    'TMPL_PARSE_STRING'         => array(
+        '__PUBLIC__' => '/static'
+    ),
+    /*======== 其他设置 ========*/
+    'CRYPT_KEY'                 => '!%6&8*!#', //加密串
+    'DATE_FORMAT'               => 'Y-m-d H:i:s',
 
+    /*======== 模板设置 ========*/
+    'LAYOUT_ON'                 => true,
+    'LAYOUT_NAME'               => 'layout',
     'TMPL_ACTION_ERROR'     =>  'Public/error', // 默认错误跳转对应的模板文件
 );

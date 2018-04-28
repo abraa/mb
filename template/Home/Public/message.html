@@ -1,0 +1,23 @@
+<script type="text/javascript">
+    var url = '{$jumpUrl}';
+    var message = "{$status?$message:$error}";
+    easyui.alert(message, function(){
+		if(url) {
+            window.top.location.href = url;
+        }
+        closeWin();
+        try{
+            parent.closeTab();
+        }catch(e){}
+    });
+
+
+    function closeWin(){
+        var p = window.parent ? window.parent : parent;
+        if(!empty(p.shadow.dgShadow)){
+            p.shadow.destroy();
+        }else{
+            easyui.dialog('destroy');
+        }
+    }
+</script>

@@ -1,0 +1,53 @@
+<form action="{:U('doExport')}" method="POST" id="master" enctype="multipart/form-data" class="form">
+<fieldset class="fixed">
+    <table class="form container">
+        <tr>
+            <th width="80">员工工号：</th>
+            <td><input name="employee_id" id="employee_id" class="easyui-textbox" data-options="prompt:''" style="width:300px;"></td>
+        </tr>
+        <tr>
+            <th>员工姓名：</th>
+            <td><input name="employee_name" id="employee_name" class="easyui-textbox" data-options="prompt:''" style="width:300px;"></td>
+        </tr>
+        <tr>
+            <th>满意度：</th>
+            <td>
+            	<select name="is_satisfy" id="is_satisfy" class="easyui-combobox" style="width: 300px;">
+                	<option value="-1">所有</option>
+                	<option value="1">满意</option>
+                    <option value="0">不满意</option>
+                </select>
+            </td>
+        </tr>
+        <tr>
+            <th>评论时间：</th>
+            <td>
+            	<input name="create_time_start" id="create_time_start" class="easyui-datetimebox" style="width:145px;" data-options="prompt:'默认今天00:00:00'">&nbsp;-
+                <input name="create_time_end" id="create_time_end" class="easyui-datetimebox" style="width:145px;" data-options="prompt:'默认今天23:59:59'">
+            </td>
+        </tr>
+        <tr>
+            <th valign="top">评论标签：</th>
+            <td>
+            	<input class="easyui-combobox" name="tag_id" id="tag_id" method="get" data-options="url:'{:U('CommentTag/select')}?no_default=1',valueField:'id',textField:'text'" style="width:300px;">
+            </td>
+        </tr>
+        <tr>
+            <th>&nbsp;</th>
+            <td>
+            	<a id="" class="l-btn l-btn-small" group="" onclick="ajax_submit();"><span class="l-btn-left l-btn-icon-left"><span class="l-btn-text">确定导出</span><span class="l-btn-icon fa fa-angle-double-down">&nbsp;</span></span></a>
+                <a id="" class="l-btn l-btn-small" group="" onclick="closeWin();"><span class="l-btn-left l-btn-icon-left"><span class="l-btn-text"> 取消 </span><span class="l-btn-icon fa fa-ban"> </span></span></a>
+            </td>
+        </tr>
+    </table>
+</fieldset>
+</form>
+<script>
+function ajax_submit(){
+	$('#master').submit();	
+}
+function closeWin(){
+	var p = window.parent ? window.parent : parent;
+	p.shadow.destroy();
+}
+</script>

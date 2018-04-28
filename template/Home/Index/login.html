@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>{$Think.config.SITE_TITLE}</title>
+    <script src="__PUBLIC__/js/jquery.min.js"></script>
+    <script src="__PUBLIC__/js/public.js"></script>
+    <script src="__PUBLIC__/js/easyui.js"></script>
+    <link rel="stylesheet" href="__PUBLIC__/style/login.css">
+	<!--[if lt IE 9]>
+    <link rel="stylesheet" href="__PUBLIC__/style/ie.css">
+    <![endif]-->
+</head>
+<body>
+<div class="login-panel">
+    <div class="login-logo"><i class="fa fa-drupal"></i> 网站管理平台</div>
+    <form id="login-form" method="post" data-url="{:U('login')}">
+        <div class="login-label">
+            <input class="easyui-textbox" name="login_name" style="width:100%; height:40px;padding:12px" data-options="prompt:'请输入用户名', required:true, missingMessage: '请输入用户名', iconCls:'icon-man',iconWidth:38">
+        </div>
+        <div class="login-label">
+            <input class="easyui-textbox" type="password" name="login_password" style="width:100%;height:40px;padding:12px" data-options="prompt:'请输入登录密码', required:true, missingMessage: '请输入登录密码',iconCls:'icon-lock',iconWidth:38">
+        </div>
+        <eq name="Think.config.verify_close" value="1">
+        <div class="login-label">
+            <input class="easyui-textbox" name="verify_code" style="width:100%;height:40px;padding:12px" data-options="prompt:'请输入验证码', required:true, missingMessage: '请输入验证码',iconCls:'icon-lock',iconWidth:38">
+        </div>
+        <div class="login-label">
+            <img src="{:U('passport/verify')}" src-source="{:U('passport/verify')}" id="verifyCode" width="100%" height="40" onclick="return refreshVerify()">
+        </div>
+        </eq>
+        <div class="login-label">
+            <a class="easyui-linkbutton" style="width:100%; height: 40px;" onclick="login()">
+                <span style="font-size:14px;">登录</span>
+            </a>
+        </div>
+    </form>
+</div>
+<script type="text/javascript">
+    window.document.onkeydown = function(e){
+        var ev = window.event || e;
+        if(ev.keyCode == 13){
+            login();
+        }
+    };
+
+    function login(){
+        var formObj = $('#login-form');
+        easyui.submit(formObj, function(result){
+            if(result.status == 0){
+                alert(result.info);
+                refreshVerify();
+                return false;
+            }
+            window.location.href = '{:U("index/index")}';
+        });
+        return false;
+    }
+    function refreshVerify() {
+        var img = $('#verifyCode');
+        var src = http_build_query(img.attr('src-source'), {t: Math.random()});
+        img.attr({src: src});
+
+    }
+</script>
+</body>
+</html>

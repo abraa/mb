@@ -1,0 +1,36 @@
+<form id="master" data-url="{:U('save')}" method="post">
+    <table class="form container">
+        <tr>
+            <th>站点id：</th>
+            <td>
+                <input name="site_id" class="easyui-numberbox" data-options="min:1,required:true">
+            </td>
+        </tr>
+        <tr>
+            <th>等级名称：</th>
+            <td>
+                <input name="rank_name" class="easyui-textbox" data-options="required:true">
+            </td>
+        </tr>
+		<tr>
+            <th>积分下限：</th>
+            <td>
+                <input name="min_points" class="easyui-numberbox" data-options="min:0,required:true">
+            </td>
+        </tr>
+		<tr>
+            <th>积分上限：</th>
+            <td>
+                <input name="max_points" class="easyui-numberbox" data-options="min:0,required:true">
+            </td>
+        </tr>
+		<tr>
+            <th>享受折扣率：</th>
+            <td>
+                <input name="discount" class="easyui-numberbox" data-options="required:true,min:90,max:100" value="100">%
+            </td>
+        </tr>
+        
+    </table>
+    <input type="hidden" name="rank_id" class="easyui-textbox">
+</form>
